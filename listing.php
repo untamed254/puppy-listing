@@ -53,7 +53,7 @@
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
         <!-- Dog Card 1 -->
         <div class="col" data-breed="german-shepherd" data-age="puppy" data-price="25000" data-location="nairobi">
-            <a href="dog-profile.html?id=1" class="text-decoration-none text-dark">
+            <a href="dog-profile.php?id=1" class="text-decoration-none text-dark">
                 <div class="card dog-card">
                     <div class="position-relative">
                         <span class="price-badge text-white">KES 25,000</span>
@@ -75,7 +75,7 @@
         </div>
         <!-- Dog Card 1 -->
         <div class="col" data-breed="german-shepherd" data-age="puppy" data-price="25000" data-location="nairobi">
-            <a href="dog-profile.html?id=1" class="text-decoration-none text-dark">
+            <a href="dog-profile.php?id=1" class="text-decoration-none text-dark">
                 <div class="card dog-card">
                     <div class="position-relative">
                         <span class="price-badge text-white">KES 25,000</span>
@@ -97,7 +97,7 @@
         </div>
         <!-- Dog Card 1 -->
         <div class="col" data-breed="german-shepherd" data-age="puppy" data-price="25000" data-location="nairobi">
-            <a href="dog-profile.html?id=1" class="text-decoration-none text-dark">
+            <a href="dog-profile.php?id=1" class="text-decoration-none text-dark">
                 <div class="card dog-card">
                     <div class="position-relative">
                         <span class="price-badge text-white">KES 25,000</span>

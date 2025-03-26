@@ -307,7 +307,7 @@
                 <i class="fas fa-dog"></i> List a Dog
             </button>
             
-           <a href="shop.php" class="btn btn-light btn-lg px-5 text-decoration-none"><i class="fas fa-search"></i> Find a Dog</a>
+           <a href="listing.php" class="btn btn-light btn-lg px-5 text-decoration-none"><i class="fas fa-search"></i> Find a Dog</a>
             
         </div>
     </div>
