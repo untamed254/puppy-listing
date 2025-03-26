@@ -5,55 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>German Shepherd - PuppyLink KE</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .dog-main {
-            position: relative;
-        }
-        
-        .image-carousel {
-            height: 60vh;
-            overflow: hidden;
-            border-radius: 12px;
-        }
-        
-        .carousel-image {
-            height: 60vh;
-            object-fit: cover;
-        }
-        
-        .sticky-contact {
-            position: sticky;
-            top: 20px;
-            z-index: 1000;
-        }
-        
-        .contact-btn-fixed {
-            display: none;
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 2000;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-        
-        @media (max-width: 768px) {
-            .contact-btn-fixed {
-                display: block;
-            }
-            
-            .sticky-contact {
-                display: none;
-            }
-        }
-        
-        .similar-card {
-            transition: transform 0.3s;
-        }
-        
-        .similar-card:hover {
-            transform: translateY(-3px);
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    
 </head>
 <body>
 
@@ -61,7 +14,7 @@
 <div class="dog-main">
     <div class="container mt-4">
         <!-- Back Button -->
-        <a href="listing.html" class="btn btn-outline-secondary mb-4">
+        <a href="shop.php" class="btn btn-outline-secondary mb-4">
             ← Back to Listings
         </a>
 
@@ -72,7 +25,10 @@
                 <div id="dogCarousel" class="carousel slide image-carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item active">
-                            <img src="https://source.unsplash.com/random/1200x800/?german-shepherd" class="d-block w-100 carousel-image">
+                            <img src="Images/stock1.jpg" class="d-block w-100 carousel-image">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="Images/stock3.jpg" class="d-block w-100 carousel-image">
                         </div>
                         <!-- Add more carousel items -->
                     </div>
@@ -86,7 +42,7 @@
 
                 <!-- Dog Information -->
                 <div class="dog-info mt-4">
-                    <h1 class="display-5">German Shepherd Puppy</h1>
+                    <h1 class="display-5">German Shepherd</h1>
                     <div class="row mt-4">
                         <div class="col-md-6">
                             <ul class="list-group">
@@ -128,7 +84,7 @@
                         <!-- Repeat similar cards -->
                         <div class="col">
                             <div class="card similar-card h-100">
-                                <img src="https://source.unsplash.com/random/400x300/?german-shepherd" class="card-img-top">
+                                <img src="Images/stock3.jpg" class="card-img-top">
                                 <div class="card-body">
                                     <h5 class="card-title">German Shepherd</h5>
                                     <p class="text-muted">4 months | Mombasa</p>
@@ -148,7 +104,7 @@
                             <h5 class="card-title">Seller Information</h5>
                             <div class="d-flex align-items-center mb-3">
                                 <div class="flex-shrink-0">
-                                    <img src="https://source.unsplash.com/random/100x100/?person" class="rounded-circle" width="50">
+                                    <img src="Images/img1.jpg" class="rounded-circle" width="50">
                                 </div>
                                 <div class="flex-grow-1 ms-3">
                                     <h6>John Mwangi</h6>

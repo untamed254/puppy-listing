@@ -5,71 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Available Dogs - PuppyLink KE</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .sticky-header {
-            position: sticky;
-            top: 0;
-            z-index: 1020;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 1rem 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .dog-card {
-            margin-bottom: 1.5rem;
-            transition: transform 0.3s;
-            border: none;
-        }
-        
-        .dog-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .dog-image {
-            height: 300px;
-            object-fit: cover;
-            position: relative;
-            border-radius: 8px;
-        }
-        
-        .image-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
-            color: white;
-            padding: 1rem;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        
-        .dog-card:hover .image-overlay {
-            opacity: 1;
-        }
-        
-        .price-badge {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: var(--bs-primary);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-        }
-        
-        @media (max-width: 768px) {
-            .dog-image {
-                height: 200px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <!-- Sticky Search & Filters -->
 <div class="sticky-header">
     <div class="container">
+        <div class="text-center">
+            <div class="brand-title">
+                <h1 class="text-warning">PawaPets Kenya</h1>
+            </div>
+        </div>
         <div class="row g-3">
             <div class="col-md-4">
                 <input type="text" class="form-control" placeholder="Search breeds..." id="searchInput">
@@ -106,14 +53,58 @@
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
         <!-- Dog Card 1 -->
         <div class="col" data-breed="german-shepherd" data-age="puppy" data-price="25000" data-location="nairobi">
-            <a href="dogprofile.html" class="text-decoration-none text-dark">
+            <a href="dog-profile.html?id=1" class="text-decoration-none text-dark">
                 <div class="card dog-card">
                     <div class="position-relative">
                         <span class="price-badge text-white">KES 25,000</span>
-                        <img src="https://source.unsplash.com/random/400x300/?german-shepherd" class="dog-image w-100">
+                        <img src="Images/stock1.jpg" class="dog-image w-100">
                         <div class="image-overlay">
                             <span class="badge bg-light text-dark">3 months</span>
                             <span class="badge bg-light text-dark ms-2">Nairobi</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">German Shepherd</h5>
+                        <div class="d-flex justify-content-between">
+                            <small class="text-muted">Purebred</small>
+                            <small class="text-success">Available</small>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- Dog Card 1 -->
+        <div class="col" data-breed="german-shepherd" data-age="puppy" data-price="25000" data-location="nairobi">
+            <a href="dog-profile.html?id=1" class="text-decoration-none text-dark">
+                <div class="card dog-card">
+                    <div class="position-relative">
+                        <span class="price-badge text-white">KES 25,000</span>
+                        <img src="Images/stock2.jpg" class="dog-image w-100">
+                        <div class="image-overlay">
+                            <span class="badge bg-light text-dark">3 months</span>
+                            <span class="badge bg-light text-dark ms-2">Nairobi</span>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">Rotweiller</h5>
+                        <div class="d-flex justify-content-between">
+                            <small class="text-muted">Purebred</small>
+                            <small class="text-success">Available</small>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- Dog Card 1 -->
+        <div class="col" data-breed="german-shepherd" data-age="puppy" data-price="25000" data-location="nairobi">
+            <a href="dog-profile.html?id=1" class="text-decoration-none text-dark">
+                <div class="card dog-card">
+                    <div class="position-relative">
+                        <span class="price-badge text-white">KES 25,000</span>
+                        <img src="Images/stock3.jpg" class="dog-image w-100">
+                        <div class="image-overlay">
+                            <span class="badge bg-light text-dark">3 months</span>
+                            <span class="badge bg-light text-dark ms-2">Mombasa</span>
                         </div>
                     </div>
                     <div class="card-body">
