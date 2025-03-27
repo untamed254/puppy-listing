@@ -17,6 +17,18 @@
             <div class="col-md-8 text-center">
                 <h1 class="display-4 mb-4">Find Your Perfect Pet in Kenya</h1>
                 <h2 class="display-4 mb-4">with <span class="text-warning">PawaPets</span></h2>
+                
+                <!-- Primary CTA Buttons -->
+                <div class="d-flex justify-content-center gap-3 mb-4">
+                    <a href="listing.php" class="btn btn-warning btn-lg px-4">
+                        <i class="fas fa-paw"></i> Browse Pets
+                    </a>
+                    <a href="registration.php" class="btn btn-outline-light btn-lg px-4">
+                        <i class="fas fa-user-plus"></i> Sign Up
+                    </a>
+                </div>
+
+                <!-- Search Bar -->
                 <div class="search-bar bg-white p-3 rounded">
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Search by breed...">
@@ -35,6 +47,16 @@
                             <i class="fas fa-search"></i> Search
                         </button>
                     </div>
+                </div>
+
+                <!-- Secondary Links -->
+                <div class="mt-4">
+                    <a href="#hiw" class="text-white me-3">
+                        <i class="fas fa-play-circle"></i> How It Works
+                    </a>
+                    <a href="#vets" class="text-white">
+                        <i class="fas fa-stethoscope"></i> Find Vets
+                    </a>
                 </div>
             </div>
         </div>
@@ -85,7 +107,7 @@
 </section>
 
 <!-- How It Works Section -->
-<section class="how-it-works py-5">
+<section class="how-it-works py-5" id="hiw">
     <div class="container">
         <h2 class="text-center mb-5 text-light">How PawaPets Works</h2>
         
@@ -222,7 +244,7 @@
 </section>
 
 <!-- Veterinary Services -->
-<section class="py-5">
+<section class="py-5" id= "vets">
     <div class="container">
         <h2 class="text-center mb-5">Featured Vets</h2>
         <div class="row g-4">
