@@ -129,7 +129,76 @@
             text-align: center;
             margin-top: 1.5rem;
         }
-        
+        /* Forgot Password Modal Styles */
+        #forgotPasswordModal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        }
+
+        #forgotPasswordModal.active {
+        opacity: 1;
+        display: flex;
+        }
+
+        .password-modal-content {
+        background: white;
+        border-radius: 12px;
+        width: 90%;
+        max-width: 450px;
+        padding: 2rem;
+        position: relative;
+        transform: translateY(20px);
+        transition: transform 0.3s ease;
+        }
+
+        #forgotPasswordModal.active .password-modal-content {
+        transform: translateY(0);
+        }
+
+        .close-modal-btn {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #6c757d;
+        }
+
+        .modal-title {
+        margin-bottom: 1.5rem;
+        color: #2c3e50;
+        text-align: center;
+        }
+
+        .modal-step {
+        display: none;
+        }
+
+        .modal-step.active {
+        display: block;
+        }
+
+        .resend-link {
+        color: #6c757d;
+        text-decoration: none;
+        }
+
+        .resend-link:hover {
+        text-decoration: underline;
+        }
         @media (max-width: 576px) {
             .signin-container {
                 padding: 1rem;
@@ -169,7 +238,7 @@
                             </button>
                         </div>
                         <div class="text-end mt-2">
-                            <a href="/forgot-password" class="text-decoration-none">Forgot password?</a>
+                            <a href="#" id= "forgotPasswordTrigger" class="text-decoration-none">Forgot password?</a>
                         </div>
                     </div>
                     
@@ -192,6 +261,52 @@
             </div>
         </div>
     </div>
+<!-- Forgot Password Modal Structure -->
+<div class="modal-overlay" id="forgotPasswordModal">
+  <div class="password-modal-content">
+    <button class="close-modal-btn">&times;</button>
+    <h3 class="modal-title">Reset Password</h3>
+    
+    <!-- Step 1: Email Input -->
+    <div class="modal-step active" id="step1">
+      <p>Enter your email to receive a reset link</p>
+      <form id="emailForm">
+        <div class="form-group">
+          <input type="email" class="form-control" placeholder="Your email address" required>
+        </div>
+        <button type="submit" class="btn btn-warning w-100 mt-3">Continue</button>
+      </form>
+    </div>
+    
+    <!-- Step 2: Verification Code -->
+    <div class="modal-step" id="step2">
+      <p>We sent a 6-digit code to <span class="user-email">user@example.com</span></p>
+      <form id="verificationForm">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Enter 6-digit code" maxlength="6" required>
+        </div>
+        <button type="submit" class="btn btn-warning w-100 mt-3">Verify Code</button>
+        <p class="text-center mt-2">
+          <a href="#" class="resend-link">Resend code</a>
+        </p>
+      </form>
+    </div>
+    
+    <!-- Step 3: New Password -->
+    <div class="modal-step" id="step3">
+      <form id="newPasswordForm">
+        <div class="form-group">
+          <input type="password" class="form-control" placeholder="New password" required>
+        </div>
+        <div class="form-group">
+          <input type="password" class="form-control" placeholder="Confirm new password" required>
+        </div>
+        <button type="submit" class="btn btn-warning w-100 mt-3">Update Password</button>
+      </form>
+    </div>
+  </div>
+</div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -239,6 +354,99 @@
                 console.log('Facebook login clicked');
                 // Implement Facebook OAuth here
             });
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        // Get elements
+        const forgotPasswordTrigger = document.getElementById('forgotPasswordTrigger');
+        const forgotPasswordModal = document.getElementById('forgotPasswordModal');
+        const closeModalBtn = document.querySelector('.close-modal-btn');
+        const steps = document.querySelectorAll('.modal-step');
+        const emailForm = document.getElementById('emailForm');
+        const verificationForm = document.getElementById('verificationForm');
+        const newPasswordForm = document.getElementById('newPasswordForm');
+        const resendLink = document.querySelector('.resend-link');
+        const userEmailDisplay = document.querySelector('.user-email');
+
+        // Open modal when Forgot Password is clicked
+        forgotPasswordTrigger.addEventListener('click', function(e) {
+            e.preventDefault();
+            forgotPasswordModal.classList.add('active');
+        });
+
+        // Close modal
+        closeModalBtn.addEventListener('click', closeModal);
+        forgotPasswordModal.addEventListener('click', function(e) {
+            if (e.target === forgotPasswordModal) {
+            closeModal();
+            }
+        });
+
+        // Close with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && forgotPasswordModal.classList.contains('active')) {
+            closeModal();
+            }
+        });
+
+        // Form submissions
+        emailForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.querySelector('input').value;
+            userEmailDisplay.textContent = email;
+            goToStep(2);
+            
+            // Here you would typically send the email with verification code
+            console.log('Email submitted:', email);
+        });
+
+        verificationForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const code = this.querySelector('input').value;
+            console.log('Verification code submitted:', code);
+            goToStep(3);
+        });
+
+        newPasswordForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newPassword = this.querySelector('input[type="password"]').value;
+            console.log('New password submitted:', newPassword);
+            alert('Password updated successfully!');
+            closeModal();
+        });
+
+        // Resend code link
+        resendLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Resend code clicked');
+            // Here you would resend the verification code
+        });
+
+        // Helper functions
+        function closeModal() {
+            forgotPasswordModal.classList.remove('active');
+            setTimeout(() => {
+            resetToFirstStep();
+            }, 300);
+        }
+
+        function resetToFirstStep() {
+            goToStep(1);
+            emailForm.reset();
+            verificationForm.reset();
+            newPasswordForm.reset();
+        }
+
+        function goToStep(stepNumber) {
+            steps.forEach((step, index) => {
+            if (index === stepNumber - 1) {
+                step.classList.add('active');
+            } else {
+                step.classList.remove('active');
+            }
+            });
+        }
         });
     </script>
 </body>
