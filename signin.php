@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Sign In - PawaPets Kenya</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -211,6 +211,46 @@
             .signin-body {
                 padding: 1.5rem;
             }
+        .password-modal-content {
+            width: 95%;
+            padding: 1.5rem;
+            margin: 0 10px;
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-control {
+            padding: 12px;
+            font-size: 0.9rem;
+        }
+
+        .btn {
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+
+        /* Adjust modal positioning on small screens */
+        #forgotPasswordModal {
+            align-items: flex-start;
+            padding-top: 20px;
+        }
+
+        .password-modal-content {
+            margin-top: 20px;
+        }
+
+        /* Improve touch targets */
+        input, button {
+            min-height: 44px; /* Minimum recommended touch target size */
+        }
+
+        .resend-link {
+            display: block;
+            padding: 8px 0;
+        }
         }
     </style>
 </head>
