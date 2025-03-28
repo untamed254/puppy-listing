@@ -101,6 +101,10 @@
                     <label for="sellerPassword" class="form-label">Password</label>
                     <input type="password" class="form-control" id="sellerPassword" required>
                 </div>
+                <div class="mb-3">
+                    <label for="confirmsellerPassword" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirmsellerPassword" required>
+                </div>
                 <button type="submit" class="btn submit-btn">Register as Seller</button>
             </form>
         </div>
@@ -147,6 +151,10 @@
                 <div class="mb-3">
                     <label for="vetPassword" class="form-label">Password</label>
                     <input type="password" class="form-control" id="vetPassword" required>
+                </div>
+                <div class="mb-3">
+                    <label for="confirmvetPassword" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirmvetPassword" required>
                 </div>
                 <button type="submit" class="btn submit-btn">Register as Veterinarian</button>
             </form>
