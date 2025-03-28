@@ -6,6 +6,7 @@
     <title>PawaPets Kenya - Find Your Perfect Pet</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,7 +14,7 @@
 <!-- Hero Section -->
 <section class="hero-section text-white">
     <div class="container">
-        <div class="row justify-content-center">
+        <div class="row justify-content-center mt-5">
             <div class="col-md-8 text-center">
                 <h1 class="display-4 mb-4">Find Your Perfect Pet in Kenya</h1>
                 <h2 class="display-4 mb-4">with <span class="text-warning">PawaPets</span></h2>
@@ -63,47 +64,117 @@
     </div>
 </section>
 
-<!-- Featured Listings -->
-<section class="py-5">
-    <div class="container">
-        <h2 class="text-center mb-5">Featured Pets</h2>
-        <div class="row g-4">
-            <!-- Repeat this card for each pet -->
-            <div class="col-md-4">
-                <div class="card pet-card h-100">
-                    <img src="Images/stock1.jpg" class="card-img-top" alt="Dog">
-                    <div class="card-body">
-                        <h5 class="card-title">German Shepherd</h5>
-                        <p class="text-muted">3 months | Nairobi</p>
-                        <h4 class="text-primary">KES 25,000</h4>
-                    </div>
-                </div>
-            </div>
-            <!-- Repeat this card for each pet -->
-            <div class="col-md-4">
-                <div class="card pet-card h-100">
-                    <img src="Images/stock1.jpg" class="card-img-top" alt="Dog">
-                    <div class="card-body">
-                        <h5 class="card-title">German Shepherd</h5>
-                        <p class="text-muted">3 months | Nairobi</p>
-                        <h4 class="text-primary">KES 25,000</h4>
-                    </div>
-                </div>
-            </div>
-            <!-- Repeat this card for each pet -->
-            <div class="col-md-4">
-                <div class="card pet-card h-100">
-                    <img src="Images/stock1.jpg" class="card-img-top" alt="Dog">
-                    <div class="card-body">
-                        <h5 class="card-title">German Shepherd</h5>
-                        <p class="text-muted">3 months | Nairobi</p>
-                        <h4 class="text-primary">KES 25,000</h4>
-                    </div>
-                </div>
-            </div>
-            <!-- Add more pet cards -->
-        </div>
+<!-- Featured Pets Section -->
+<section class="featured-pets py-5 bg-light">
+  <div class="container">
+    <div class="section-header d-flex justify-content-between align-items-center mb-5">
+      <h2 class="section-title">Featured Pets</h2>
+      <a href="listing.php" class="btn btn-outline-warning">View All <i class="fas fa-arrow-right ms-2"></i></a>
     </div>
+
+    <div class="row g-4">
+      <!-- Pet Card 1 -->
+      <div class="col-md-6 col-lg-4 col-xl-3">
+        <div class="card pet-card h-100 border-0 shadow-sm">
+          <div class="position-relative">
+            <img src="Images/stock1.jpg" class="card-img-top pet-image" alt="German Shepherd">
+            <span class="badge bg-warning position-absolute top-0 start-0 m-2">Popular</span>
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h5 class="card-title mb-0">Max</h5>
+              <h5 class="text-warning mb-0">KES 25,000</h5>
+            </div>
+            <div class="pet-meta d-flex flex-wrap gap-2 mb-3">
+              <span class="text-muted"><i class="fas fa-paw me-1"></i> German Shepherd</span>
+              <span class="text-muted"><i class="fas fa-birthday-cake me-1"></i> 3 months</span>
+              <span class="text-muted"><i class="fas fa-map-marker-alt me-1"></i> Nairobi</span>
+            </div>
+            <div class="d-grid gap-2">
+              <button class="btn btn-outline-primary btn-sm quick-view-btn">Quick View</button>
+              <button class="btn btn-warning btn-sm"><i class="bi bi-whatsapp"> </i>Contact Seller</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pet Card 2 -->
+      <div class="col-md-6 col-lg-4 col-xl-3">
+        <div class="card pet-card h-100 border-0 shadow-sm">
+          <div class="position-relative">
+            <img src="Images/stock1.jpg" class="card-img-top pet-image" alt="German Shepherd">
+            <span class="badge bg-success position-absolute top-0 start-0 m-2">New</span>
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h5 class="card-title mb-0">Bella</h5>
+              <h5 class="text-warning mb-0">KES 30,000</h5>
+            </div>
+            <div class="pet-meta d-flex flex-wrap gap-2 mb-3">
+              <span class="text-muted"><i class="fas fa-paw me-1"></i> Golden Retriever</span>
+              <span class="text-muted"><i class="fas fa-birthday-cake me-1"></i> 2 months</span>
+              <span class="text-muted"><i class="fas fa-map-marker-alt me-1"></i> Mombasa</span>
+            </div>
+            <div class="d-grid gap-2">
+              <button class="btn btn-outline-primary btn-sm quick-view-btn">Quick View</button>
+              <button class="btn btn-warning btn-sm">Contact Seller</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pet Card 3 -->
+      <div class="col-md-6 col-lg-4 col-xl-3">
+        <div class="card pet-card h-100 border-0 shadow-sm">
+          <div class="position-relative">
+            <img src="Images/stock1.jpg" class="card-img-top pet-image" alt="German Shepherd">
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h5 class="card-title mb-0">Rocky</h5>
+              <h5 class="text-warning mb-0">KES 18,000</h5>
+            </div>
+            <div class="pet-meta d-flex flex-wrap gap-2 mb-3">
+              <span class="text-muted"><i class="fas fa-paw me-1"></i> Boerboel</span>
+              <span class="text-muted"><i class="fas fa-birthday-cake me-1"></i> 4 months</span>
+              <span class="text-muted"><i class="fas fa-map-marker-alt me-1"></i> Kisumu</span>
+            </div>
+            <div class="d-grid gap-2">
+              <button class="btn btn-outline-primary btn-sm quick-view-btn">Quick View</button>
+              <button class="btn btn-warning btn-sm">Contact Seller</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pet Card 4 -->
+      <div class="col-md-6 col-lg-4 col-xl-3">
+        <div class="card pet-card h-100 border-0 shadow-sm">
+          <div class="position-relative">
+            <img src="Images/stock1.jpg" class="card-img-top pet-image" alt="German Shepherd">
+            <span class="badge bg-danger position-absolute top-0 start-0 m-2">-15%</span>
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <h5 class="card-title mb-0">Luna</h5>
+              <div>
+                <span class="text-warning">KES 29,750</span>
+              </div>
+            </div>
+            <div class="pet-meta d-flex flex-wrap gap-2 mb-3">
+              <span class="text-muted"><i class="fas fa-paw me-1"></i> Husky</span>
+              <span class="text-muted"><i class="fas fa-birthday-cake me-1"></i> 5 months</span>
+              <span class="text-muted"><i class="fas fa-map-marker-alt me-1"></i> Nakuru</span>
+            </div>
+            <div class="d-grid gap-2">
+              <button class="btn btn-outline-primary btn-sm quick-view-btn">Quick View</button>
+              <button class="btn btn-warning btn-sm">Contact Seller</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- How It Works Section -->
@@ -334,6 +405,32 @@
         </div>
     </div>
 </section>
+
+<script>
+  // Wishlist functionality
+  document.querySelectorAll('.wishlist-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      this.classList.toggle('active');
+      const icon = this.querySelector('i');
+      icon.classList.toggle('far');
+      icon.classList.toggle('fas');
+      
+      // Add your wishlist logic here
+      const petName = this.closest('.pet-card').querySelector('.card-title').textContent;
+      console.log(`${petName} ${this.classList.contains('active') ? 'added to' : 'removed from'} wishlist`);
+    });
+  });
+  
+  // Quick View functionality
+  document.querySelectorAll('.quick-view-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const petCard = this.closest('.pet-card');
+      const petName = petCard.querySelector('.card-title').textContent;
+      // Implement your quick view modal here
+      console.log(`Quick view for ${petName}`);
+    });
+  });
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

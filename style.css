@@ -185,3 +185,62 @@
 .similar-card:hover {
     transform: translateY(-3px);
 }
+.featured-pets {
+    background-color: #f9f9f9;
+  }
+  
+  .pet-card {
+    transition: all 0.3s ease;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  
+  .pet-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+  
+  .pet-image {
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  
+  .pet-card:hover .pet-image {
+    transform: scale(1.03);
+  }
+  
+  .wishlist-btn {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+  
+  .wishlist-btn:hover, .wishlist-btn.active {
+    background-color: #ffc107 !important;
+    color: white !important;
+  }
+  
+  .wishlist-btn.active i {
+    font-weight: 900;
+  }
+  
+  .pet-meta span {
+    font-size: 0.85rem;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .pet-meta span {
+      font-size: 0.8rem;
+    }
+    
+    .section-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+  }

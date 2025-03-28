@@ -9,7 +9,7 @@
     <title>Sign up</title>
 </head>
 <body>
-<a href="index.php" class="btn btn-outline-secondary mb-4">
+<a href="index.php" class="btn btn-outline-secondary mb-4 mx-2">
             ← Back to HomePage
         </a>
     <div class="container py-5">
