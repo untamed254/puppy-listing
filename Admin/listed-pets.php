@@ -8,115 +8,182 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --sidebar-width: 250px;
-            --header-height: 60px;
-            --primary-color: #FFC107;
-            --secondary-color: #2C3E50;
+            --primary-color: #4e73df;
+            --primary-hover: #2e59d9;
+            --secondary-color: #858796;
+            --success-color: #1cc88a;
+            --info-color: #36b9cc;
+            --warning-color: #f6c23e;
+            --danger-color: #e74a3b;
+            --light-color: #f8f9fc;
+            --dark-color: #5a5c69;
         }
         
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f8f9fc;
             overflow-x: hidden;
         }
         
-        /* Dashboard Layout */
         .admin-container {
-            display: grid;
-            grid-template-columns: var(--sidebar-width) 1fr;
-            grid-template-rows: var(--header-height) 1fr;
+            display: flex;
             min-height: 100vh;
         }
         
         /* Sidebar Styles */
         .admin-sidebar {
-            background: var(--secondary-color);
+            width: 250px;
+            background: linear-gradient(180deg, var(--primary-color) 0%, #224abe 100%);
             color: white;
-            grid-row: 1 / -1;
-            position: fixed;
-            width: var(--sidebar-width);
-            height: 100vh;
             transition: all 0.3s;
+            position: fixed;
+            height: 100vh;
+            z-index: 1000;
         }
         
         .sidebar-brand {
-            padding: 1rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding: 1.5rem 1rem;
+            font-weight: 800;
+            font-size: 1.2rem;
+            text-align: center;
+            letter-spacing: 0.05rem;
+            z-index: 1;
+        }
+        
+        .sidebar-brand i {
+            color: rgba(255, 255, 255, 0.8);
         }
         
         .sidebar-menu {
-            list-style: none;
             padding: 0;
+            list-style: none;
         }
         
         .sidebar-menu li {
-            padding: 0.5rem 1rem;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+            margin-bottom: 0.5rem;
         }
         
-        .sidebar-menu li.active {
-            background: rgba(255,193,7,0.2);
-            border-left: 3px solid var(--primary-color);
-        }
-        
-        .sidebar-menu a {
-            color: white;
-            text-decoration: none;
+        .sidebar-menu li a {
             display: block;
+            padding: 0.75rem 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .sidebar-menu li a:hover {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .sidebar-menu li a i {
+            width: 20px;
+            text-align: center;
+        }
+        
+        .sidebar-menu li.active a {
+            color: white;
+            font-weight: 700;
+        }
+        
+        .sidebar-menu li.active::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background-color: white;
         }
         
         /* Header Styles */
         .admin-header {
-            grid-column: 2;
-            background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: 56px;
+            background-color: white;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            padding: 0 1.5rem;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 0 2rem;
-            position: sticky;
+            justify-content: space-between;
+            position: fixed;
             top: 0;
-            z-index: 100;
+            right: 0;
+            left: 250px;
+            z-index: 999;
+        }
+        
+        #sidebarToggle {
+            margin-right: 1rem;
+        }
+        
+        .admin-search {
+            flex-grow: 1;
+            max-width: 400px;
         }
         
         /* Main Content Styles */
         .admin-main {
-            grid-column: 2;
-            padding: 2rem;
-            background: #f5f7fa;
+            flex: 1;
+            padding: 1.5rem;
+            margin-top: 56px;
+            margin-left: 250px;
+            min-height: calc(100vh - 56px);
         }
         
-        /* Card Styles */
         .admin-card {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
-            margin-bottom: 2rem;
-            overflow: hidden;
+            background-color: white;
+            border-radius: 0.35rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+            margin-bottom: 1.5rem;
         }
         
         .card-header {
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid #eee;
+            padding: 1rem 1.35rem;
+            background-color: #f8f9fc;
+            border-bottom: 1px solid #e3e6f0;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            border-radius: 0.35rem 0.35rem 0 0 !important;
+        }
+        
+        .card-header h5 {
+            margin: 0;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .card-header h5 i {
+            color: var(--primary-color);
+        }
+        
+        .card-body {
+            padding: 1.25rem;
         }
         
         /* Table Styles */
         .admin-table {
             width: 100%;
-            border-collapse: collapse;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
         }
         
-        .admin-table th {
-            background: #f8f9fa;
-            padding: 0.75rem 1rem;
-            text-align: left;
+        .admin-table thead th {
+            vertical-align: bottom;
+            border-bottom: 2px solid #e3e6f0;
+            padding: 0.75rem;
+            background-color: #f8f9fc;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.65rem;
+            letter-spacing: 0.1rem;
         }
         
-        .admin-table td {
-            padding: 0.75rem 1rem;
-            border-top: 1px solid #eee;
+        .admin-table tbody td {
+            padding: 0.75rem;
+            vertical-align: middle;
+            border-top: 1px solid #e3e6f0;
         }
         
         /* Pet Specific Styles */
@@ -200,8 +267,8 @@
             </div>
             <ul class="sidebar-menu">
                 <li><a href="dashboard.php"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a></li>
-                <li class="active"><a href="pets.html"><i class="fas fa-dog me-2"></i> Listed Pets</a></li>
-                <li><a href="breeds.html"><i class="fas fa-dna me-2"></i> Breeds</a></li>
+                <li class="active"><a href="listed-pets.php"><i class="fas fa-dog me-2"></i> Listed Pets</a></li>
+                <li><a href="breeds.php"><i class="fas fa-dna me-2"></i> Breeds</a></li>
                 <li><a href="users.html"><i class="fas fa-users me-2"></i> Users</a></li>
                 <li><a href="vets.html"><i class="fas fa-stethoscope me-2"></i> Veterinarians</a></li>
                 <li><a href="transactions.html"><i class="fas fa-money-bill-wave me-2"></i> Transactions</a></li>
