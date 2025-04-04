@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 28, 2025 at 02:35 PM
+-- Generation Time: Apr 04, 2025 at 11:17 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -40,7 +40,28 @@ CREATE TABLE `admin_table` (
 --
 
 INSERT INTO `admin_table` (`admin_id`, `admin_name`, `admin_email`, `admin_image`, `admin_password`) VALUES
-(1, 'Duncan', ' duncan@petpawa.info', 'img1.jpg', '$2y$10$9jvYQ97O0V5JajkbtYMLSeWTcP65Gku0OEheu.g/p8gIfdaoDAsqm');
+(1, 'Duncan', ' duncan@petpawa.info', 'img1.jpg', '$2y$10$9jvYQ97O0V5JajkbtYMLSeWTcP65Gku0OEheu.g/p8gIfdaoDAsqm'),
+(2, 'Mwas', ' duncan@petpawa.info', '', '$2y$10$nGlBzElIxROX5KfjsEkMHeOtO/w8sR09UfEw.w8Vfz1GUB84duuw2');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pet_category`
+--
+
+CREATE TABLE `pet_category` (
+  `category_id` int(11) NOT NULL,
+  `category_title` varchar(100) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `pet_category`
+--
+
+INSERT INTO `pet_category` (`category_id`, `category_title`, `created_at`) VALUES
+(1, 'Dog', '2025-04-04 20:40:15'),
+(5, 'Cat', '2025-04-04 21:09:32');
 
 -- --------------------------------------------------------
 
@@ -80,6 +101,12 @@ ALTER TABLE `admin_table`
   ADD PRIMARY KEY (`admin_id`);
 
 --
+-- Indexes for table `pet_category`
+--
+ALTER TABLE `pet_category`
+  ADD PRIMARY KEY (`category_id`);
+
+--
 -- Indexes for table `puppy_listing`
 --
 ALTER TABLE `puppy_listing`
@@ -93,7 +120,13 @@ ALTER TABLE `puppy_listing`
 -- AUTO_INCREMENT for table `admin_table`
 --
 ALTER TABLE `admin_table`
-  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `pet_category`
+--
+ALTER TABLE `pet_category`
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `puppy_listing`

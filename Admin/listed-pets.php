@@ -269,6 +269,7 @@
                 <li><a href="dashboard.php"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a></li>
                 <li class="active"><a href="listed-pets.php"><i class="fas fa-dog me-2"></i> Listed Pets</a></li>
                 <li><a href="breeds.php"><i class="fas fa-dna me-2"></i> Breeds</a></li>
+                <li><a href="listed-categories.php"><i class="fas fa-users me-2"></i> Pet Categories</a></li>
                 <li><a href="users.html"><i class="fas fa-users me-2"></i> Users</a></li>
                 <li><a href="vets.html"><i class="fas fa-stethoscope me-2"></i> Veterinarians</a></li>
                 <li><a href="transactions.html"><i class="fas fa-money-bill-wave me-2"></i> Transactions</a></li>

@@ -1,3 +1,71 @@
+<?php
+session_start();
+include("../Includes/conn.php");
+include("functions/functions.php");
+
+if (!is_logged_in()) {
+    header('Location: index.php');
+    exit;
+}
+
+if(isset($_POST['insert-category'])) {
+    // Sanitize and validate input
+    $cat_title = filter_var($_POST['category_title'] ?? '', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    
+    if(empty(trim($cat_title))) {
+        echo "<script>alert('Category name cannot be empty')</script>";
+        exit;
+    }
+
+    try {
+        // Check for existing category
+        $stmt = $con->prepare("SELECT category_title FROM pet_category WHERE category_title = ?");
+        $stmt->bind_param("s", $cat_title);
+        $stmt->execute();
+        
+        if($stmt->get_result()->num_rows > 0) {
+            echo "<script>alert('This category already exists')</script>";
+        } else {
+            // Insert new category
+            $insert_stmt = $con->prepare("INSERT INTO pet_category (category_title) VALUES (?)");
+            $insert_stmt->bind_param("s", $cat_title);
+            
+            if($insert_stmt->execute()) {
+                echo "<script>
+                    alert('Category added successfully');
+                    window.location.reload();
+                </script>";
+            }
+        }
+    } catch (Exception $e) {
+        error_log("Database error: " . $e->getMessage());
+        echo "<script>alert('Operation failed. Please try again.')</script>";
+    }
+}
+
+if(isset($_POST['update-category'])) {
+    $cat_id = $_POST['cat_id'];
+    $new_title = $_POST['category_title'];
+    
+    $stmt = $con->prepare("UPDATE pet_category SET category_title = ? WHERE category_id = ?");
+    $stmt->bind_param("si", $new_title, $cat_id);
+    $stmt->execute();
+    
+    header("Location: ".$_SERVER['PHP_SELF']);
+    exit;
+}
+// Handle category operations
+if(isset($_GET['delete'])) {
+    $cat_id = $_GET['delete'];
+    $delete_stmt = $con->prepare("DELETE FROM pet_category WHERE category_id = ?");
+    $delete_stmt->bind_param("i", $cat_id);
+    $delete_stmt->execute();
+}
+
+// Get all categories
+$categories = $con->query("SELECT * FROM pet_category ORDER BY category_title ASC");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -256,8 +324,8 @@
             <ul class="sidebar-menu">
                 <li><a href="dashboard.php"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</a></li>
                 <li><a href="listed-pets.php"><i class="fas fa-dog me-2"></i> Listed Pets</a></li>
-                <li class="active"><a href="breeds.php"><i class="fas fa-dna me-2"></i> Breeds</a></li>
-                <li><a href="listed-categories.php"><i class="fas fa-users me-2"></i> Pet Categories</a></li>
+                <li><a href="breeds.php"><i class="fas fa-dna me-2"></i> Breeds</a></li>
+                <li class="active"><a href="listed-categories.php"><i class="fas fa-users me-2"></i> Pet Categories</a></li>
                 <li><a href="vets.html"><i class="fas fa-stethoscope me-2"></i> Veterinarians</a></li>
                 <li><a href="transactions.html"><i class="fas fa-money-bill-wave me-2"></i> Transactions</a></li>
                 <li><a href="reports.html"><i class="fas fa-chart-bar me-2"></i> Reports</a></li>
@@ -272,7 +340,7 @@
             </button>
             <div class="admin-search">
                 <div class="input-group">
-                    <input type="text" class="form-control form-control-sm" placeholder="Search breeds...">
+                    <input type="text" class="form-control form-control-sm" placeholder="Search pet category...">
                     <button class="btn btn-sm btn-outline-secondary" type="button">
                         <i class="fas fa-search"></i>
                     </button>
@@ -295,221 +363,124 @@
 
         <!-- Main Content -->
         <main class="admin-main">
-            <!-- Breeds Management Section -->
             <div class="admin-card">
                 <div class="card-header">
-                    <h5 class="mb-0"><i class="fas fa-dna me-2"></i> Breeds Catalog</h5>
+                    <h5 class="mb-0"><i class="fas fa-dna me-2"></i> Pet Categories</h5>
                     <div>
                         <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addBreedModal">
-                            <i class="fas fa-plus me-1"></i> Add Breed
-                        </button>
-                        <button class="btn btn-sm btn-outline-primary ms-2" id="exportBtn">
-                            <i class="fas fa-file-export me-1"></i> Export
+                            <i class="fas fa-plus me-1"></i> Add Category
                         </button>
                     </div>
                 </div>
+                
                 <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <select class="form-select form-select-sm" id="categoryFilter">
-                                <option value="">All Categories</option>
-                                <option value="Dog">Dogs</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="input-group input-group-sm">
-                                <input type="text" class="form-control" placeholder="Search breeds..." id="searchInput">
-                                <button class="btn btn-outline-secondary" type="button" id="searchBtn">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
                     <div class="table-responsive">
                         <table class="admin-table">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Breed Name</th>
-                                    <th>Category</th>
-                                    <th>Listings</th>
-                                    <th>Actions</th>
+                                    <th>#</th>
+                                    <th>Category Name</th>
+                                    <th colspan="2">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>BR-001</td>
-                                    <td>German Shepherd</td>
-                                    <td>Dog</td>
-                                    <td>142</td>
+                                <?php
+                                $count = 0;
+                                while($row = $categories->fetch_assoc()):
+                                    $count++;
+                                ?>
+                                <tr class='text-center'>
+                                    <td><?= $count ?></td>
+                                    <td><?= htmlspecialchars($row['category_title']) ?></td>
                                     <td>
-                                        <button class="btn btn-sm btn-outline-primary me-1 view-breed" data-id="BR-001">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-warning me-1 edit-breed" data-id="BR-001">
+                                    <button class="btn btn-sm btn-outline-warning edit-category" 
+                                                data-id="<?= $row['category_id'] ?>"
+                                                data-name="<?= htmlspecialchars($row['category_title']) ?>">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button class="btn btn-sm btn-outline-danger delete-breed" data-id="BR-001">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td>BR-002</td>
-                                    <td>Japanese Spitz</td>
-                                    <td>Dog</td>
-                                    <td>98</td>
                                     <td>
-                                        <button class="btn btn-sm btn-outline-primary me-1 view-breed" data-id="BR-002">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-warning me-1 edit-breed" data-id="BR-002">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-danger delete-breed" data-id="BR-002">
+                                        <a href="?delete=<?= $row['category_id'] ?>" 
+                                           class="btn btn-sm btn-outline-danger" 
+                                           onclick="return confirm('Are you sure?')">
                                             <i class="fas fa-trash"></i>
-                                        </button>
+                                        </a>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>BR-003</td>
-                                    <td>Husky</td>
-                                    <td>Dog</td>
-                                    <td>32</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary me-1 view-breed" data-id="BR-003">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-warning me-1 edit-breed" data-id="BR-003">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-danger delete-breed" data-id="BR-003">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>BR-004</td>
-                                    <td>Labrador Retriever</td>
-                                    <td>Dog</td>
-                                    <td>187</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary me-1 view-breed" data-id="BR-004">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-warning me-1 edit-breed" data-id="BR-004">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-danger delete-breed" data-id="BR-004">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>BR-005</td>
-                                    <td>Rottweiler</td>
-                                    <td>Dog</td>
-                                    <td>76</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary me-1 view-breed" data-id="BR-005">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-warning me-1 edit-breed" data-id="BR-005">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-danger delete-breed" data-id="BR-005">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
+                                <?php endwhile; ?>
                             </tbody>
                         </table>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p class="mb-0">Showing <strong>1</strong> to <strong>5</strong> of <strong>25</strong> breeds</p>
-                        </div>
-                        <div class="col-md-6">
-                            <nav aria-label="Page navigation" class="float-end">
-                                <ul class="pagination pagination-sm mb-0">
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                                    </li>
-                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">Next</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
                     </div>
                 </div>
             </div>
         </main>
     </div>
-
-    <!-- Add Breed Modal -->
-    <div class="modal fade" id="addBreedModal" tabindex="-1" aria-labelledby="addBreedModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
+    <!-- Add Category Modal -->
+<div class="modal fade" id="addBreedModal" tabindex="-1" aria-labelledby="addBreedModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="breedForm" action="" method="post">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addBreedModalLabel">Add New Breed</h5>
+                    <h5 class="modal-title" id="addBreedModalLabel">Add New Pet category</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="breedForm">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="breedName" class="form-label">Breed Name *</label>
-                                    <input type="text" class="form-control" id="breedName" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="breedCategory" class="form-label">Category *</label>
-                                    <select class="form-select" id="breedCategory" required>
-                                        <option value="">Select Category</option>
-                                        <option value="Dog">Dog</option>
-                                    </select>
-                                </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-3">
+                                <label for="breedName" class="form-label">Pet Category Name *</label>
+                                <input type="text" class="form-control" id="breedName" 
+                                       name="category_title" required> <!-- Fixed name attribute -->
                             </div>
                         </div>
-                        
-                        <!-- <div class="mb-3">
-                            <label for="breedDescription" class="form-label">Description</label>
-                            <textarea class="form-control" id="breedDescription" rows="3"></textarea>
-                        </div> -->
-                        
-                        <!-- <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="breedSize" class="form-label">Size</label>
-                                    <select class="form-select" id="breedSize">
-                                        <option value="">Select Size</option>
-                                        <option value="Small">Small</option>
-                                        <option value="Medium">Medium</option>
-                                        <option value="Large">Large</option>
-                                        <option value="Extra Large">Extra Large</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div> -->
-
-                    </form>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="saveBreedBtn">Save Breed</button>
+                    <button type="submit" class="btn btn-primary" name="insert-category">
+                        Save Category
+                    </button>
                 </div>
+            </form>
+        </div>
+    </div>
+</div>
+ <!-- Edit Category Modal -->
+ <div class="modal fade" id="editCategoryModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Category</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="cat_id" id="editCatId">
+                        <div class="mb-3">
+                            <label class="form-label">Category Name</label>
+                            <input type="text" class="form-control" name="category_title" id="editCatName" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary" name="update-category">Save Changes</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+
+    <script>
+    // Edit Category Handler
+    document.querySelectorAll('.edit-category').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.getElementById('editCatId').value = btn.dataset.id;
+            document.getElementById('editCatName').value = btn.dataset.name;
+            new bootstrap.Modal(document.getElementById('editCategoryModal')).show();
+        });
+    });
+    </script>
+
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
