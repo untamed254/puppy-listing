@@ -13,5 +13,12 @@ function is_logged_in() {
     // If the user has both a session and a session cookie, they are logged in.
     return true;
 }
-
+//logout fxn
+function logout_user() {
+    session_unset();
+    session_destroy();
+    session_write_close();
+    setcookie(session_name(), '', 0, '/');
+    session_regenerate_id(true);
+}
 ?>

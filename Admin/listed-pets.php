@@ -1,3 +1,16 @@
+<?php
+session_start();
+include('../Includes/conn.php');
+include('functions/functions.php');
+// Check for the cookie on every page load. If the cookie exists, the user is logged in.
+// Check if the user is logged in.
+if (!is_logged_in()) {
+  // The user is not logged in, so redirect them to the login page.
+  header('Location: index.php');
+  exit;
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

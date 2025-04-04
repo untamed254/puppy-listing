@@ -62,7 +62,7 @@ if (!is_logged_in()) {
             font-size: 1.2rem;
             text-align: center;
             letter-spacing: 0.05rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            /* border-bottom: 1px solid rgba(255, 255, 255, 0.1); */
         }
 
         .sidebar-brand i {
@@ -86,7 +86,7 @@ if (!is_logged_in()) {
             color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
             transition: all 0.3s;
-            font-size: 0.9rem;
+            /* font-size: 0.9rem; */
         }
 
         .sidebar-menu li a:hover {
@@ -290,7 +290,7 @@ if (!is_logged_in()) {
                         <li><a class="dropdown-item" href="#profile"><i class="fas fa-user me-2"></i> Profile</a></li>
                         <li><a class="dropdown-item" href="#settings"><i class="fas fa-cog me-2"></i> Settings</a></li>
                         <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#logout"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                        <li><a class="dropdown-item" href="logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
                     </ul>
                 </div>
             </div>
