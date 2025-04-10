@@ -29,10 +29,10 @@
                     <a class="nav-link active" href="listing.php">Listed Pets</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#about">About Us</a>
+                    <a class="nav-link" href="aboutus.php">About Us</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#contact">Contact Us</a>
+                    <a class="nav-link" href="contactus.php">Contact Us</a>
                 </li>
             </ul>
         </div>
@@ -78,79 +78,173 @@
     </div>
 </div>
 
-<!-- Dog Listings Grid -->
-<main class="container mt-5">
+<!-- Modern Dog Listings Grid -->
+<main class="container mt-4">
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        <!-- Dog Card 1 -->
+        <!-- Dog Card 1 - Modern Design -->
         <div class="col" data-breed="german-shepherd" data-age="puppy" data-price="25000" data-location="nairobi">
-            <a href="dog-profile.php?id=1" class="text-decoration-none text-dark">
-                <div class="card dog-card">
+            <div class="card dog-card h-100 border-0 shadow-sm overflow-hidden">
+                <a href="dog-profile.php?id=1" class="text-decoration-none text-dark">
                     <div class="position-relative">
-                        <span class="price-badge text-white">KES 25,000</span>
-                        <img src="Images/stock1.jpg" class="dog-image w-100">
-                        <div class="image-overlay">
-                            <span class="badge bg-light text-dark">3 months</span>
-                            <span class="badge bg-light text-dark ms-2">Nairobi</span>
+                        <!-- Modern price tag -->
+                        <div class="position-absolute top-0 end-0 bg-warning text-dark px-2 py-1 rounded-bl">
+                            <small class="fw-bold">KES 25,000</small>
+                        </div>
+                        <!-- Image with hover effect -->
+                        <div class="image-container overflow-hidden">
+                            <img src="Images/stock1.jpg" class="dog-image w-100" alt="German Shepherd puppy">
+                            <div class="image-overlay d-flex flex-column justify-content-end">
+                                <div class="d-flex gap-2 mb-2">
+                                    <span class="badge bg-white text-dark rounded-pill">3 months</span>
+                                    <span class="badge bg-white text-dark rounded-pill">Nairobi</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <h5 class="card-title">German Shepherd</h5>
-                        <div class="d-flex justify-content-between">
-                            <small class="text-muted">Purebred</small>
-                            <small class="text-success">Available</small>
+                    <div class="card-body p-3">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <h5 class="card-title mb-1 fw-semibold">German Shepherd</h5>
+                            <span class="text-success small fw-bold">Available</span>
+                        </div>
+                        <p class="text-muted small mb-2">Purebred • Vaccinated</p>
+                        <!-- Modern action buttons -->
+                        <div class="d-flex justify-content-between mt-3">
+                            <button class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            <button class="btn btn-sm btn-warning rounded-pill px-3">
+                                View Details <i class="fas fa-arrow-right ms-1"></i>
+                            </button>
                         </div>
                     </div>
-                </div>
-            </a>
+                </a>
+            </div>
         </div>
-        <!-- Dog Card 1 -->
-        <div class="col" data-breed="german-shepherd" data-age="puppy" data-price="25000" data-location="nairobi">
-            <a href="dog-profile.php?id=1" class="text-decoration-none text-dark">
-                <div class="card dog-card">
+
+        <!-- Dog Card 2 - Modern Design -->
+        <div class="col" data-breed="rottweiler" data-age="puppy" data-price="30000" data-location="nairobi">
+            <div class="card dog-card h-100 border-0 shadow-sm overflow-hidden">
+                <a href="dog-profile.php?id=2" class="text-decoration-none text-dark">
                     <div class="position-relative">
-                        <span class="price-badge text-white">KES 25,000</span>
-                        <img src="Images/stock2.jpg" class="dog-image w-100">
-                        <div class="image-overlay">
-                            <span class="badge bg-light text-dark">3 months</span>
-                            <span class="badge bg-light text-dark ms-2">Nairobi</span>
+                        <div class="position-absolute top-0 end-0 bg-warning text-dark px-2 py-1 rounded-bl">
+                            <small class="fw-bold">KES 30,000</small>
+                        </div>
+                        <div class="image-container overflow-hidden">
+                            <img src="Images/stock2.jpg" class="dog-image w-100" alt="Rottweiler puppy">
+                            <div class="image-overlay d-flex flex-column justify-content-end">
+                                <div class="d-flex gap-2 mb-2">
+                                    <span class="badge bg-white text-dark rounded-pill">4 months</span>
+                                    <span class="badge bg-white text-dark rounded-pill">Nairobi</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Rotweiller</h5>
-                        <div class="d-flex justify-content-between">
-                            <small class="text-muted">Purebred</small>
-                            <small class="text-success">Available</small>
+                    <div class="card-body p-3">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <h5 class="card-title mb-1 fw-semibold">Rottweiler</h5>
+                            <span class="text-success small fw-bold">Available</span>
+                        </div>
+                        <p class="text-muted small mb-2">Purebred • Vaccinated</p>
+                        <div class="d-flex justify-content-between mt-3">
+                            <button class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            <button class="btn btn-sm btn-warning rounded-pill px-3">
+                                View Details <i class="fas fa-arrow-right ms-1"></i>
+                            </button>
                         </div>
                     </div>
-                </div>
-            </a>
+                </a>
+            </div>
         </div>
-        <!-- Dog Card 1 -->
-        <div class="col" data-breed="german-shepherd" data-age="puppy" data-price="25000" data-location="nairobi">
-            <a href="dog-profile.php?id=1" class="text-decoration-none text-dark">
-                <div class="card dog-card">
-                    <div class="position-relative">
-                        <span class="price-badge text-white">KES 25,000</span>
-                        <img src="Images/stock3.jpg" class="dog-image w-100">
-                        <div class="image-overlay">
-                            <span class="badge bg-light text-dark">3 months</span>
-                            <span class="badge bg-light text-dark ms-2">Mombasa</span>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">German Shepherd</h5>
-                        <div class="d-flex justify-content-between">
-                            <small class="text-muted">Purebred</small>
-                            <small class="text-success">Available</small>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        </div>
-        
-        <!-- Add more dog cards following the same structure -->
     </div>
 </main>
+
+<!-- Footer Section -->
+<footer class="footer-section bg-dark text-white pt-5 pb-4">
+    <div class="container">
+        <div class="row g-4">
+            <!-- Brand Info Column -->
+            <div class="col-lg-4 mb-4">
+                <div class="footer-brand d-flex align-items-center mb-3">
+                    <i class="fas fa-paw fa-2x text-warning me-2"></i>
+                    <h3 class="mb-0">PawaPets Kenya</h3>
+                </div>
+                <p class="text-muted">Connecting loving homes with perfect pets across Kenya.</p>
+                
+                <div class="social-links mt-4">
+                    <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-white"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+
+            <!-- Quick Links Column -->
+            <div class="col-md-4 col-lg-2 mb-4">
+                <h5 class="text-warning mb-3">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Home</a></li>
+                    <li class="mb-2"><a href="listing.php" class="text-white text-decoration-none">Listed Pets</a></li>
+                    <li class="mb-2"><a href="#about" class="text-white text-decoration-none">About Us</a></li>
+                    <li class="mb-2"><a href="#vets" class="text-white text-decoration-none">Veterinary Services</a></li>
+                    <li class="mb-2"><a href="#contact" class="text-white text-decoration-none">Contact Us</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">FAQ</a></li>
+                </ul>
+            </div>
+
+            <!-- Pet Categories Column -->
+            <div class="col-md-4 col-lg-2 mb-4">
+                <h5 class="text-warning mb-3">Pet Types</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Dogs</a></li>
+                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Cats</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Info Column -->
+            <div class="col-md-4 col-lg-4 mb-4">
+                <h5 class="text-warning mb-3">Contact Us</h5>
+                <ul class="list-unstyled text-muted">
+                    <li class="mb-3 d-flex">
+                        <i class="fas fa-phone-alt text-warning me-2 mt-1"></i>
+                        <span>+254 700 123456</span>
+                    </li>
+                    <li class="mb-3 d-flex">
+                        <i class="fas fa-envelope text-warning me-2 mt-1"></i>
+                        <span>info@pawapets.co.ke</span>
+                    </li>
+                </ul>
+
+                <div class="newsletter mt-4">
+                    <h6 class="text-white mb-2">Subscribe for Updates</h6>
+                    <div class="input-group">
+                        <input type="email" class="form-control" placeholder="Your email">
+                        <button class="btn btn-warning" type="button">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="my-4 bg-secondary">
+
+        <!-- Copyright Row -->
+        <div class="row">
+            <div class="col-md-6 text-center text-md-start">
+                <p class="small text-muted mb-0">&copy; 2025 PawaPets Kenya. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+                <ul class="list-inline small mb-0">
+                    <li class="list-inline-item"><a href="#" class="text-muted text-decoration-none">Privacy Policy</a></li>
+                    <li class="list-inline-item mx-2">•</li>
+                    <li class="list-inline-item"><a href="#" class="text-muted text-decoration-none">Terms of Service</a></li>
+                    <li class="list-inline-item mx-2">•</li>
+                    <li class="list-inline-item"><a href="#" class="text-muted text-decoration-none">Sitemap</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>

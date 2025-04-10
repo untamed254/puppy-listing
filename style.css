@@ -703,3 +703,65 @@
         justify-content: center !important;
     }
 }
+/* Modern Card Styling */
+.dog-card {
+    transition: all 0.3s ease;
+    border-radius: 12px !important;
+}
+
+.dog-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+}
+
+.image-container {
+    height: 200px;
+    position: relative;
+}
+
+.dog-image {
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.dog-card:hover .dog-image {
+    transform: scale(1.05);
+}
+
+.image-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 15px;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.dog-card:hover .image-overlay {
+    opacity: 1;
+}
+
+/* Modern badge styling */
+main{
+    padding-bottom: 30px;
+}
+.badge {
+    font-size: 0.7rem;
+    padding: 4px 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Button hover effects */
+.btn-outline-secondary:hover {
+    background-color: #f8f9fa;
+    color: #dc3545 !important;
+    border-color: #dc3545;
+}
+
+.btn-warning:hover {
+    background-color: #ffca2c;
+    transform: translateX(3px);
+}
