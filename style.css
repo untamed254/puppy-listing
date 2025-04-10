@@ -3,13 +3,58 @@
     --secondary-color: #198754; /* Bootstrap success green */
 }
 
+/* Navigation Bar Styles */
+.navbar-custom {
+    background-color: rgba(13, 110, 253, 0.9); /* Semi-transparent blue matching your theme */
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-custom.scrolled {
+    background-color: rgba(13, 110, 253, 0.95); /* Slightly less transparent when scrolled */
+}
+
+.navbar-custom .navbar-brand {
+    color: white;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-custom .navbar-brand i {
+    margin-right: 8px;
+}
+
+.navbar-custom .nav-link {
+    color: white;
+    font-weight: 500;
+    margin: 0 8px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.navbar-custom .nav-link:hover {
+    background-color: rgba(255, 193, 7, 0.2); /* Light yellow hover matching your theme */
+    color: white;
+}
+
+.navbar-custom .navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-custom .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
 .hero-section {
     background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
                 url('Images/hero01.jpg') center/cover;
     height: 70vh;
     display: flex;
     align-items: center;
-    padding: 4rem 0 6rem; /* More vertical space */
+    padding-top: 60px; /* Give space for fixed navbar */
+    padding-bottom: 40px;
 }
 .search-bar {
     box-shadow: 0 5px 15px rgba(0,0,0,0.1); /* Depth effect */
@@ -34,10 +79,186 @@
     justify-content: center;
 }
 
-.testimonial-card {
-    border-left: 4px solid var(--secondary-color);
+/* Testimonials Section */
+.testimonials-section {
+    background-color: #f8fafc;
+    position: relative;
+    overflow: hidden;
 }
 
+.testimonials-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('Images/paw-pattern.png') repeat;
+    opacity: 0.03;
+    z-index: 0;
+}
+
+.section-header {
+    position: relative;
+    z-index: 1;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #212529;
+}
+
+.section-title-main {
+    position: relative;
+    z-index: 2;
+}
+
+.section-title-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: rgba(13, 110, 253, 0.05);
+    white-space: nowrap;
+    z-index: 1;
+}
+
+.section-subtitle {
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+}
+
+.testimonial-card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    border: 1px solid rgba(13, 110, 253, 0.1);
+}
+
+.testimonial-card.featured {
+    border: 2px solid #ffc107;
+    transform: scale(1.02);
+}
+
+.featured-badge {
+    position: absolute;
+    top: -10px;
+    right: 20px;
+    background: #ffc107;
+    color: #212529;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    box-shadow: 0 2px 10px rgba(255, 193, 7, 0.3);
+}
+
+.testimonial-rating {
+    color: #ffc107;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+
+.testimonial-content {
+    font-style: italic;
+    color: #495057;
+    margin-bottom: 25px;
+    position: relative;
+    padding-left: 20px;
+}
+
+.testimonial-content::before {
+    content: '"';
+    position: absolute;
+    left: 0;
+    top: -10px;
+    font-size: 3rem;
+    color: rgba(13, 110, 253, 0.1);
+    font-family: serif;
+    line-height: 1;
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+    margin-top: auto;
+}
+
+.author-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 15px;
+    border: 3px solid rgba(13, 110, 253, 0.1);
+}
+
+.author-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.author-info h5 {
+    margin-bottom: 2px;
+    font-size: 1rem;
+}
+
+.author-info span {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.author-pet {
+    margin-left: auto;
+    font-size: 0.8rem;
+    color: #0d6efd;
+    background: rgba(13, 110, 253, 0.1);
+    padding: 3px 8px;
+    border-radius: 20px;
+}
+
+.testimonial-controls .btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hover Effects */
+.testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.testimonial-card.featured:hover {
+    transform: scale(1.05) translateY(-5px);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 767.98px) {
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .section-title-bg {
+        font-size: 2.5rem;
+    }
+    
+    .testimonial-card {
+        padding: 20px;
+    }
+}
 .vet-card img {
     height: 200px;
     object-fit: cover;
@@ -45,10 +266,31 @@
 .how-it-works {
     background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
                 url('Images/bg1.jpg') center/cover;
+    
     .step-card {
         border: 1px solid #eee;
         border-radius: 10px;
         transition: transform 0.3s;
+        height: 100%; /* Make all cards take full height of their container */
+        display: flex;
+        flex-direction: column;
+        padding: 20px; /* Consistent padding */
+    }
+    
+    .step-card-body {
+        flex: 1; /* This makes the body take up remaining space */
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .step-card h5 {
+        min-height: 3rem; /* Set minimum height for headings */
+        margin-bottom: 1rem;
+    }
+    
+    .step-card p {
+        flex-grow: 1; /* Allows paragraph to expand and fill space */
+        margin-bottom: 1.5rem;
     }
     
     .step-card:hover {
@@ -60,7 +302,7 @@
         width: 50px;
         height: 50px;
         border-radius: 50%;
-        margin: 0 auto;
+        margin: 0 auto 1rem auto; /* Added bottom margin */
         display: flex;
         align-items: center;
         justify-content: center;
@@ -72,6 +314,17 @@
         min-width: 150px;
         text-align: center;
     }
+    
+    /* Ensure all cards in a row have same height */
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    
+    .row > [class*='col-'] {
+        display: flex;
+        flex-direction: column;
+    }
 }
 .sticky-header {
     position: sticky;
@@ -80,7 +333,8 @@
     background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
                 url('Images/bg1.jpg') center/cover;
     backdrop-filter: blur(10px);
-    padding: 1rem 0;
+    padding-top: 80px;
+    padding-bottom: 20px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
@@ -124,6 +378,15 @@
     background: var(--bs-primary);
     padding: 0.5rem 1rem;
     border-radius: 20px;
+}
+
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        background-color: rgba(13, 110, 253, 0.98); /* Solid background for mobile menu */
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 10px;
+    }
 }
 
 @media (max-width: 768px) {
@@ -244,3 +507,199 @@
       gap: 1rem;
     }
   }
+
+ /* Veterinary Coming Soon Section */
+.vet-coming-soon {
+    background-color: #f8f9fa;
+    position: relative;
+    overflow: hidden;
+}
+
+.vet-coming-card {
+    background: linear-gradient(rgba(255,255,255,0.95), rgba(255,255,255,0.95));
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(13, 110, 253, 0.1);
+    transition: all 0.4s ease;
+}
+
+.vet-coming-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.vet-icon-container {
+    position: relative;
+    display: inline-block;
+}
+
+.vet-main-icon {
+    font-size: 3.5rem;
+    color: #0d6efd;
+    position: relative;
+    z-index: 1;
+}
+
+.vet-paw-icon {
+    position: absolute;
+    color: #ffc107;
+    opacity: 0.8;
+}
+
+.vet-paw-1 {
+    font-size: 1.8rem;
+    top: -15px;
+    right: -20px;
+    animation: float 3s ease-in-out infinite;
+}
+
+.vet-paw-2 {
+    font-size: 1.2rem;
+    bottom: -10px;
+    left: -20px;
+    animation: float 3s ease-in-out 0.5s infinite;
+}
+
+.vet-section-title {
+    color: #212529;
+    font-weight: 600;
+    position: relative;
+    display: inline-block;
+}
+
+.vet-section-title::after {
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 3px;
+    background: #ffc107;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.vet-description {
+    color: #6c757d;
+    font-size: 1.1rem;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.vet-badge {
+    display: inline-block;
+    background-color: #ffc107;
+    color: #212529;
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-weight: 500;
+    box-shadow: 0 2px 10px rgba(255, 193, 7, 0.3);
+    animation: pulse 2s infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Footer Styles */
+.footer-section {
+    background: linear-gradient(135deg, #1e3a8a 0%, #0d6efd 100%) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.footer-section::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 300px;
+    height: 300px;
+    background: url('Images/paw-pattern-light.png') no-repeat;
+    opacity: 0.05;
+    z-index: 0;
+}
+
+.footer-brand h3 {
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.social-links {
+    display: flex;
+    gap: 12px;
+}
+
+.social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    color: white;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.social-icon i {
+    transition: inherit;
+    color: inherit;
+}
+
+.social-icon:hover {
+    background: #ffc107;
+    color: #212529 !important;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
+}
+
+/* Specific icon adjustments */
+.social-icon .fa-whatsapp { font-size: 18px; }
+.social-icon .fa-tiktok { font-size: 15px; }
+
+.footer-section a {
+    transition: all 0.2s ease;
+}
+
+.footer-section a:hover {
+    color: #ffc107 !important;
+    padding-left: 5px;
+}
+
+.newsletter .form-control {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.newsletter .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.newsletter .btn {
+    font-weight: 500;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 767.98px) {
+    .footer-section {
+        text-align: center;
+    }
+    
+    .footer-section .d-flex {
+        justify-content: center;
+    }
+    
+    .social-links {
+        justify-content: center !important;
+    }
+}
