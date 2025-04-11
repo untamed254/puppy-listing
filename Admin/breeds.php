@@ -2,15 +2,63 @@
 session_start();
 include('../Includes/conn.php');
 include('functions/functions.php');
-// Check for the cookie on every page load. If the cookie exists, the user is logged in.
-// Check if the user is logged in.
+
 if (!is_logged_in()) {
-  // The user is not logged in, so redirect them to the login page.
-  header('Location: index.php');
-  exit;
+    header('Location: index.php');
+    exit;
 }
 
+// Handle Breed Operations
+try {
+    // Add Breed
+    if(isset($_POST['insert-breed'])) {
+        $breed_name = filter_var($_POST['breed_name'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        
+        $stmt = $con->prepare("INSERT INTO puppy_breed (breed_name) VALUES (?)");
+        $stmt->bind_param("s", $breed_name);
+        $stmt->execute();
+        
+        $_SESSION['success'] = "Breed added successfully";
+        header("Location: breeds.php");
+        exit;
+    }
+
+    // Delete Breed
+    if(isset($_GET['delete'])) {
+        $breed_id = filter_var($_GET['delete'], FILTER_VALIDATE_INT);
+        
+        $stmt = $con->prepare("DELETE FROM puppy_breed WHERE breed_id = ?");
+        $stmt->bind_param("i", $breed_id);
+        $stmt->execute();
+        
+        $_SESSION['success'] = "Breed deleted successfully";
+        header("Location: breeds.php");
+        exit;
+    }
+
+    // Update Breed
+    if(isset($_POST['update-breed'])) {
+        $breed_id = filter_var($_POST['breed_id'], FILTER_VALIDATE_INT);
+        $breed_name = filter_var($_POST['breed_name'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        
+        $stmt = $con->prepare("UPDATE puppy_breed SET breed_name = ? WHERE breed_id = ?");
+        $stmt->bind_param("si", $breed_name, $breed_id);
+        $stmt->execute();
+        
+        $_SESSION['success'] = "Breed updated successfully";
+        header("Location: breeds.php");
+        exit;
+    }
+} catch(Exception $e) {
+    $_SESSION['error'] = "Operation failed: " . $e->getMessage();
+    header("Location: breeds.php");
+    exit;
+}
+
+// Get all breeds
+$breeds = $con->query("SELECT * FROM puppy_breed ORDER BY breed_name ASC");
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -278,37 +326,18 @@ if (!is_logged_in()) {
             </ul>
         </aside>
 
-        <!-- Header -->
-        <header class="admin-header">
-            <button class="btn btn-sm btn-outline-secondary d-lg-none" id="sidebarToggle">
-                <i class="fas fa-bars"></i>
-            </button>
-            <div class="admin-search">
-                <div class="input-group">
-                    <input type="text" class="form-control form-control-sm" placeholder="Search breeds...">
-                    <button class="btn btn-sm btn-outline-secondary" type="button">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="admin-actions">
-                <div class="dropdown">
-                    <button class="btn btn-sm btn-light dropdown-toggle" data-bs-toggle="dropdown">
-                        <i class="fas fa-user-circle me-1"></i> Admin User
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#profile"><i class="fas fa-user me-2"></i> Profile</a></li>
-                        <li><a class="dropdown-item" href="#settings"><i class="fas fa-cog me-2"></i> Settings</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="#logout"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
-                    </ul>
-                </div>
-            </div>
-        </header>
-
         <!-- Main Content -->
         <main class="admin-main">
-            <!-- Breeds Management Section -->
+            <?php if(isset($_SESSION['error'])): ?>
+                <div class="alert alert-danger"><?= $_SESSION['error'] ?></div>
+                <?php unset($_SESSION['error']); ?>
+            <?php endif; ?>
+            
+            <?php if(isset($_SESSION['success'])): ?>
+                <div class="alert alert-success"><?= $_SESSION['success'] ?></div>
+                <?php unset($_SESSION['success']); ?>
+            <?php endif; ?>
+
             <div class="admin-card">
                 <div class="card-header">
                     <h5 class="mb-0"><i class="fas fa-dna me-2"></i> Breeds Catalog</h5>
@@ -316,150 +345,46 @@ if (!is_logged_in()) {
                         <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addBreedModal">
                             <i class="fas fa-plus me-1"></i> Add Breed
                         </button>
-                        <button class="btn btn-sm btn-outline-primary ms-2" id="exportBtn">
-                            <i class="fas fa-file-export me-1"></i> Export
-                        </button>
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col-md-4">
-                            <select class="form-select form-select-sm" id="categoryFilter">
-                                <option value="">All Categories</option>
-                                <option value="Dog">Dogs</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="input-group input-group-sm">
-                                <input type="text" class="form-control" placeholder="Search breeds..." id="searchInput">
-                                <button class="btn btn-outline-secondary" type="button" id="searchBtn">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    
                     <div class="table-responsive">
                         <table class="admin-table">
                             <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Breed Name</th>
-                                    <th>Category</th>
-                                    <th>Listings</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>BR-001</td>
-                                    <td>German Shepherd</td>
-                                    <td>Dog</td>
-                                    <td>142</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary me-1 view-breed" data-id="BR-001">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-warning me-1 edit-breed" data-id="BR-001">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-danger delete-breed" data-id="BR-001">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>BR-002</td>
-                                    <td>Japanese Spitz</td>
-                                    <td>Dog</td>
-                                    <td>98</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary me-1 view-breed" data-id="BR-002">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-warning me-1 edit-breed" data-id="BR-002">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-danger delete-breed" data-id="BR-002">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>BR-003</td>
-                                    <td>Husky</td>
-                                    <td>Dog</td>
-                                    <td>32</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary me-1 view-breed" data-id="BR-003">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-warning me-1 edit-breed" data-id="BR-003">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-danger delete-breed" data-id="BR-003">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>BR-004</td>
-                                    <td>Labrador Retriever</td>
-                                    <td>Dog</td>
-                                    <td>187</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary me-1 view-breed" data-id="BR-004">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-warning me-1 edit-breed" data-id="BR-004">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-danger delete-breed" data-id="BR-004">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>BR-005</td>
-                                    <td>Rottweiler</td>
-                                    <td>Dog</td>
-                                    <td>76</td>
-                                    <td>
-                                        <button class="btn btn-sm btn-outline-primary me-1 view-breed" data-id="BR-005">
-                                            <i class="fas fa-eye"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-warning me-1 edit-breed" data-id="BR-005">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-outline-danger delete-breed" data-id="BR-005">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
+                                <?php if($breeds->num_rows > 0): ?>
+                                    <?php $count = 1; ?>
+                                    <?php while($breed = $breeds->fetch_assoc()): ?>
+                                        <tr>
+                                            <td>BR-<?= str_pad($count++, 3, '0', STR_PAD_LEFT) ?></td>
+                                            <td><?= htmlspecialchars($breed['breed_name']) ?></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-outline-warning me-1 edit-breed" 
+                                                        data-id="<?= $breed['breed_id'] ?>"
+                                                        data-name="<?= htmlspecialchars($breed['breed_name']) ?>">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <a href="breeds.php?delete=<?= $breed['breed_id'] ?>" 
+                                                   class="btn btn-sm btn-outline-danger" 
+                                                   onclick="return confirm('Are you sure you want to delete this breed?')">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <?php endwhile; ?>
+                                <?php else: ?>
+                                    <tr>
+                                        <td colspan="3" class="text-center py-4">No breeds found</td>
+                                    </tr>
+                                <?php endif; ?>
                             </tbody>
                         </table>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p class="mb-0">Showing <strong>1</strong> to <strong>5</strong> of <strong>25</strong> breeds</p>
-                        </div>
-                        <div class="col-md-6">
-                            <nav aria-label="Page navigation" class="float-end">
-                                <ul class="pagination pagination-sm mb-0">
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                                    </li>
-                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">Next</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -468,94 +393,67 @@ if (!is_logged_in()) {
 
     <!-- Add Breed Modal -->
     <div class="modal fade" id="addBreedModal" tabindex="-1" aria-labelledby="addBreedModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addBreedModalLabel">Add New Breed</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="breedForm">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="breedName" class="form-label">Breed Name *</label>
-                                    <input type="text" class="form-control" id="breedName" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="breedCategory" class="form-label">Category *</label>
-                                    <select class="form-select" id="breedCategory" required>
-                                        <option value="">Select Category</option>
-                                        <option value="Dog">Dog</option>
-                                    </select>
-                                </div>
-                            </div>
+                <form method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addBreedModalLabel">Add New Breed</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="breedName" class="form-label">Breed Name *</label>
+                            <input type="text" class="form-control" name="breed_name" required>
                         </div>
-                        
-                        <!-- <div class="mb-3">
-                            <label for="breedDescription" class="form-label">Description</label>
-                            <textarea class="form-control" id="breedDescription" rows="3"></textarea>
-                        </div> -->
-                        
-                        <!-- <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="breedSize" class="form-label">Size</label>
-                                    <select class="form-select" id="breedSize">
-                                        <option value="">Select Size</option>
-                                        <option value="Small">Small</option>
-                                        <option value="Medium">Medium</option>
-                                        <option value="Large">Large</option>
-                                        <option value="Extra Large">Extra Large</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div> -->
-
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="saveBreedBtn">Save Breed</button>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary" name="insert-breed">Save Breed</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
+    <!-- Edit Breed Modal -->
+    <div class="modal fade" id="editBreedModal" tabindex="-1" aria-labelledby="editBreedModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editBreedModalLabel">Edit Breed</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="breed_id" id="editBreedId">
+                        <div class="mb-3">
+                            <label for="editBreedName" class="form-label">Breed Name *</label>
+                            <input type="text" class="form-control" name="breed_name" id="editBreedName" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary" name="update-breed">Update Breed</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Toggle sidebar on mobile
-        document.getElementById('sidebarToggle').addEventListener('click', function() {
-            document.querySelector('.admin-sidebar').classList.toggle('show');
-        });
-        
-        // Initialize tooltips
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl);
+        // Edit Breed Handler
+        document.querySelectorAll('.edit-breed').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.getElementById('editBreedId').value = btn.dataset.id;
+                document.getElementById('editBreedName').value = btn.dataset.name;
+                new bootstrap.Modal(document.getElementById('editBreedModal')).show();
+            });
         });
 
-        // Search functionality
-        document.getElementById('searchBtn').addEventListener('click', function() {
-            const searchTerm = document.getElementById('searchInput').value;
-            console.log('Searching for:', searchTerm);
-            // In a real application, this would filter the table
-        });
-        
-        // Filter functionality
-        document.getElementById('categoryFilter').addEventListener('change', function() {
-            const category = this.value;
-            console.log('Filtering by category:', category);
-            // In a real application, this would filter the table
-        });
-        
-        document.getElementById('statusFilter').addEventListener('change', function() {
-            const status = this.value;
-            console.log('Filtering by status:', status);
-            // In a real application, this would filter the table
+        // Toggle sidebar
+        document.getElementById('sidebarToggle').addEventListener('click', function() {
+            document.querySelector('.admin-sidebar').classList.toggle('show');
         });
     </script>
 </body>
