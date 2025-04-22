@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 11, 2025 at 07:01 PM
+-- Generation Time: Apr 22, 2025 at 05:15 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -76,6 +76,19 @@ CREATE TABLE `pet_images` (
   `image_url` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `pet_images`
+--
+
+INSERT INTO `pet_images` (`image_id`, `puppy_id`, `image_url`) VALUES
+(4, 7, '../uploads/pets/680788d10a2f9_IMG_2328.jpg'),
+(5, 10, '../uploads/pets/6807a095d7054_IMG_2284.jpg'),
+(6, 11, '../uploads/pets/6807a0e5e2707_IMG_2316.jpg'),
+(7, 11, '../uploads/pets/6807a0e5f0cb2_IMG_2317.jpg'),
+(8, 12, '../uploads/pets/6807b1149dec9_istockphoto-1077470274-612x612.jpg'),
+(9, 12, '../uploads/pets/6807b114a2229_istockphoto-1133304849-612x612.jpg'),
+(10, 12, '../uploads/pets/6807b114a81e4_istockphoto-1446418006-612x612.jpg');
+
 -- --------------------------------------------------------
 
 --
@@ -115,7 +128,6 @@ CREATE TABLE `puppy_listing` (
   `puppy_location` varchar(100) NOT NULL,
   `price` decimal(10,2) NOT NULL,
   `puppy_desc` varchar(255) NOT NULL,
-  `puppy_img` varchar(255) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -123,8 +135,11 @@ CREATE TABLE `puppy_listing` (
 -- Dumping data for table `puppy_listing`
 --
 
-INSERT INTO `puppy_listing` (`puppy_id`, `category_id`, `breed_id`, `puppy_name`, `puppy_age`, `puppy_location`, `price`, `puppy_desc`, `puppy_img`, `created_at`) VALUES
-(1, 1, 1, 'Max', 3, 'Nairobi', '25000.00', 'Purebred German Shepherd puppy with vaccinations', 'german-shepherd.jpg', '2025-04-11 15:03:17');
+INSERT INTO `puppy_listing` (`puppy_id`, `category_id`, `breed_id`, `puppy_name`, `puppy_age`, `puppy_location`, `price`, `puppy_desc`, `created_at`) VALUES
+(7, 1, 1, 'Pendo', 8, 'Nairobi', '30000.00', 'Purebred German Shepherd puppy with vaccinations', '2025-04-22 12:17:20'),
+(10, 1, 1, 'Bruno', 11, 'Nairobi', '38000.00', 'Purebred German Shepherd puppy with vaccinations', '2025-04-22 13:58:45'),
+(11, 1, 3, ' Bosco', 8, 'Nairobi', '22000.00', 'Purebred Poodle puppy with vaccinations', '2025-04-22 14:00:05'),
+(12, 1, 4, 'Mutina', 3, 'Mombasa', '12000.00', 'Bailey loves snuggles, enjoys playtime with kids, and is already getting the hang of potty training. With those big floppy ears and curious eyes, he&rsquo;s impossible not to fall in love with!', '2025-04-22 15:09:08');
 
 --
 -- Indexes for dumped tables
@@ -184,7 +199,7 @@ ALTER TABLE `pet_category`
 -- AUTO_INCREMENT for table `pet_images`
 --
 ALTER TABLE `pet_images`
-  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `puppy_breed`
@@ -196,7 +211,7 @@ ALTER TABLE `puppy_breed`
 -- AUTO_INCREMENT for table `puppy_listing`
 --
 ALTER TABLE `puppy_listing`
-  MODIFY `puppy_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `puppy_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Constraints for dumped tables

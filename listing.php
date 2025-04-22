@@ -1,3 +1,7 @@
+<?php 
+  include("Includes/conn.php");
+  include("Admin/functions/functions.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -81,82 +85,9 @@
 <!-- Modern Dog Listings Grid -->
 <main class="container mt-4">
     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        <!-- Dog Card 1 - Modern Design -->
-        <div class="col" data-breed="german-shepherd" data-age="puppy" data-price="25000" data-location="nairobi">
-            <div class="card dog-card h-100 border-0 shadow-sm overflow-hidden">
-                <a href="dog-profile.php?id=1" class="text-decoration-none text-dark">
-                    <div class="position-relative">
-                        <!-- Modern price tag -->
-                        <div class="position-absolute top-0 end-0 bg-warning text-dark px-2 py-1 rounded-bl">
-                            <small class="fw-bold">KES 25,000</small>
-                        </div>
-                        <!-- Image with hover effect -->
-                        <div class="image-container overflow-hidden">
-                            <img src="Images/stock1.jpg" class="dog-image w-100" alt="German Shepherd puppy">
-                            <div class="image-overlay d-flex flex-column justify-content-end">
-                                <div class="d-flex gap-2 mb-2">
-                                    <span class="badge bg-white text-dark rounded-pill">3 months</span>
-                                    <span class="badge bg-white text-dark rounded-pill">Nairobi</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body p-3">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <h5 class="card-title mb-1 fw-semibold">German Shepherd</h5>
-                            <span class="text-success small fw-bold">Available</span>
-                        </div>
-                        <p class="text-muted small mb-2">Purebred • Vaccinated</p>
-                        <!-- Modern action buttons -->
-                        <div class="d-flex justify-content-between mt-3">
-                            <button class="btn btn-sm btn-outline-secondary rounded-pill px-3">
-                                <i class="far fa-heart"></i>
-                            </button>
-                            <button class="btn btn-sm btn-warning rounded-pill px-3">
-                                View Details <i class="fas fa-arrow-right ms-1"></i>
-                            </button>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
-
-        <!-- Dog Card 2 - Modern Design -->
-        <div class="col" data-breed="rottweiler" data-age="puppy" data-price="30000" data-location="nairobi">
-            <div class="card dog-card h-100 border-0 shadow-sm overflow-hidden">
-                <a href="dog-profile.php?id=2" class="text-decoration-none text-dark">
-                    <div class="position-relative">
-                        <div class="position-absolute top-0 end-0 bg-warning text-dark px-2 py-1 rounded-bl">
-                            <small class="fw-bold">KES 30,000</small>
-                        </div>
-                        <div class="image-container overflow-hidden">
-                            <img src="Images/stock2.jpg" class="dog-image w-100" alt="Rottweiler puppy">
-                            <div class="image-overlay d-flex flex-column justify-content-end">
-                                <div class="d-flex gap-2 mb-2">
-                                    <span class="badge bg-white text-dark rounded-pill">4 months</span>
-                                    <span class="badge bg-white text-dark rounded-pill">Nairobi</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body p-3">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <h5 class="card-title mb-1 fw-semibold">Rottweiler</h5>
-                            <span class="text-success small fw-bold">Available</span>
-                        </div>
-                        <p class="text-muted small mb-2">Purebred • Vaccinated</p>
-                        <div class="d-flex justify-content-between mt-3">
-                            <button class="btn btn-sm btn-outline-secondary rounded-pill px-3">
-                                <i class="far fa-heart"></i>
-                            </button>
-                            <button class="btn btn-sm btn-warning rounded-pill px-3">
-                                View Details <i class="fas fa-arrow-right ms-1"></i>
-                            </button>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </div>
+       <?php
+         getAllPets();
+       ?>
     </div>
 </main>
 

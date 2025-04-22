@@ -461,6 +461,7 @@ $breeds = $con->query("SELECT * FROM puppy_breed ORDER BY breed_name ASC");
                         <thead>
                             <tr>
                                 <th>ID</th>
+
                                 <th>Pet</th>
                                 <th>Breed</th>
                                 <th>Age</th>

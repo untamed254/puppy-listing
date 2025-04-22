@@ -1,3 +1,7 @@
+<?php 
+  include("Includes/conn.php");
+  include("Admin/functions/functions.php");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -100,107 +104,10 @@
       <a href="listing.php" class="btn btn-outline-warning">View All <i class="fas fa-arrow-right ms-2"></i></a>
     </div>
 
-    <div class="row g-4">
-      <!-- Pet Card 1 -->
-      <div class="col-md-6 col-lg-4 col-xl-3">
-        <div class="card pet-card h-100 border-0 shadow-sm">
-          <div class="position-relative">
-            <img src="Images/stock1.jpg" class="card-img-top pet-image" alt="German Shepherd">
-            <span class="badge bg-warning position-absolute top-0 start-0 m-2">Popular</span>
-          </div>
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start mb-2">
-              <h5 class="card-title mb-0">Max</h5>
-              <h5 class="text-warning mb-0">KES 25,000</h5>
-            </div>
-            <div class="pet-meta d-flex flex-wrap gap-2 mb-3">
-              <span class="text-muted"><i class="fas fa-paw me-1"></i> German Shepherd</span>
-              <span class="text-muted"><i class="fas fa-birthday-cake me-1"></i> 3 months</span>
-              <span class="text-muted"><i class="fas fa-map-marker-alt me-1"></i> Nairobi</span>
-            </div>
-            <div class="d-grid gap-2">
-              <button class="btn btn-outline-primary btn-sm quick-view-btn">Quick View</button>
-              <button class="btn btn-warning btn-sm"><i class="bi bi-whatsapp"> </i>Contact Seller</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Pet Card 2 -->
-      <div class="col-md-6 col-lg-4 col-xl-3">
-        <div class="card pet-card h-100 border-0 shadow-sm">
-          <div class="position-relative">
-            <img src="Images/stock1.jpg" class="card-img-top pet-image" alt="German Shepherd">
-            <span class="badge bg-success position-absolute top-0 start-0 m-2">New</span>
-          </div>
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start mb-2">
-              <h5 class="card-title mb-0">Bella</h5>
-              <h5 class="text-warning mb-0">KES 30,000</h5>
-            </div>
-            <div class="pet-meta d-flex flex-wrap gap-2 mb-3">
-              <span class="text-muted"><i class="fas fa-paw me-1"></i> Golden Retriever</span>
-              <span class="text-muted"><i class="fas fa-birthday-cake me-1"></i> 2 months</span>
-              <span class="text-muted"><i class="fas fa-map-marker-alt me-1"></i> Mombasa</span>
-            </div>
-            <div class="d-grid gap-2">
-              <button class="btn btn-outline-primary btn-sm quick-view-btn">Quick View</button>
-              <button class="btn btn-warning btn-sm">Contact Seller</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Pet Card 3 -->
-      <div class="col-md-6 col-lg-4 col-xl-3">
-        <div class="card pet-card h-100 border-0 shadow-sm">
-          <div class="position-relative">
-            <img src="Images/stock1.jpg" class="card-img-top pet-image" alt="German Shepherd">
-          </div>
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start mb-2">
-              <h5 class="card-title mb-0">Rocky</h5>
-              <h5 class="text-warning mb-0">KES 18,000</h5>
-            </div>
-            <div class="pet-meta d-flex flex-wrap gap-2 mb-3">
-              <span class="text-muted"><i class="fas fa-paw me-1"></i> Boerboel</span>
-              <span class="text-muted"><i class="fas fa-birthday-cake me-1"></i> 4 months</span>
-              <span class="text-muted"><i class="fas fa-map-marker-alt me-1"></i> Kisumu</span>
-            </div>
-            <div class="d-grid gap-2">
-              <button class="btn btn-outline-primary btn-sm quick-view-btn">Quick View</button>
-              <button class="btn btn-warning btn-sm">Contact Seller</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Pet Card 4 -->
-      <div class="col-md-6 col-lg-4 col-xl-3">
-        <div class="card pet-card h-100 border-0 shadow-sm">
-          <div class="position-relative">
-            <img src="Images/stock1.jpg" class="card-img-top pet-image" alt="German Shepherd">
-            <span class="badge bg-danger position-absolute top-0 start-0 m-2">-15%</span>
-          </div>
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start mb-2">
-              <h5 class="card-title mb-0">Luna</h5>
-              <div>
-                <span class="text-warning">KES 29,750</span>
-              </div>
-            </div>
-            <div class="pet-meta d-flex flex-wrap gap-2 mb-3">
-              <span class="text-muted"><i class="fas fa-paw me-1"></i> Husky</span>
-              <span class="text-muted"><i class="fas fa-birthday-cake me-1"></i> 5 months</span>
-              <span class="text-muted"><i class="fas fa-map-marker-alt me-1"></i> Nakuru</span>
-            </div>
-            <div class="d-grid gap-2">
-              <button class="btn btn-outline-primary btn-sm quick-view-btn">Quick View</button>
-              <button class="btn btn-warning btn-sm">Contact Seller</button>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="row d-flex g-4">
+      <?php
+      getHomePagePets();
+      ?>
     </div>
   </div>
 </section>
@@ -365,47 +272,6 @@
         </div>
     </div>
 </section>
-
-<!-- Veterinary Services 
-<section class="py-5" id= "vets">
-    <div class="container">
-        <h2 class="text-center mb-5">Featured Vets</h2>
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card vet-card h-100">
-                    <img src="Images/doc1.jpg" class="card-img-top">
-                    <div class="card-body">
-                        <h5>Dr. Jane Muthoni</h5>
-                        <p class="text-muted">Nairobi · Vaccinations · Surgery</p>
-                        <button class="btn btn-outline-secondary">Book Consultation</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card vet-card h-100">
-                    <img src="Images/doc1.jpg" class="card-img-top">
-                    <div class="card-body">
-                        <h5>Dr. Jane Muthoni</h5>
-                        <p class="text-muted">Nairobi · Vaccinations · Surgery</p>
-                        <button class="btn btn-outline-secondary">Book Consultation</button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card vet-card h-100">
-                    <img src="Images/doc1.jpg" class="card-img-top">
-                    <div class="card-body">
-                        <h5>Dr. Jane Muthoni</h5>
-                        <p class="text-muted">Nairobi · Vaccinations · Surgery</p>
-                        <button class="btn btn-outline-secondary">Book Consultation</button>
-                    </div>
-                </div>
-            </div>
-             Add more vet cards
-        </div>
-    </div>
-</section>
--->
 
 <!-- Veterinary Services - Coming Soon (Final Version) -->
 <section class="vet-coming-soon py-5" id="vets">

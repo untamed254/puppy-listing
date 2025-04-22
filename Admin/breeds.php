@@ -402,7 +402,7 @@ $breeds = $con->query("SELECT * FROM puppy_breed ORDER BY breed_name ASC");
                     </div>
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="breedName" class="form-label">Breed Name *</label>
+                            <label for="breedName" class="form-label">Breed Name <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" name="breed_name" required>
                         </div>
                     </div>
