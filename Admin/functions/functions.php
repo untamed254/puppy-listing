@@ -27,7 +27,6 @@ function logout_user() {
 }
 function getHomePagePets() {
     global $con;
-    
 
     if (!isset($_GET['breed'])) {
         $select_query = "
@@ -49,15 +48,18 @@ function getHomePagePets() {
             pl.puppy_id
         ORDER BY 
             RAND()
-        LIMIT 4
-    ";
+        LIMIT 4";
+
         $result_query = mysqli_query($con, $select_query);
+
+        if (!$result_query) {
+            die("Query Failed: " . mysqli_error($con)); // Add this line
+        }
 
         while ($row = mysqli_fetch_assoc($result_query)) {
             $puppy_id = $row['puppy_id'];
             $puppy_title = $row['puppy_name'];
             $puppy_age = $row['puppy_age'];
-            // $puppy_gender = $row['puppy_gender'];
             $puppy_location = $row['puppy_location'];
             $puppy_price = $row['price'];
             $breed_title = $row['breed_name'] ?? 'Unknown';
@@ -94,6 +96,7 @@ function getHomePagePets() {
         }
     }
 }
+
 
 function getAllPets() {
     global $con;
