@@ -472,28 +472,10 @@
   .pet-card:hover .pet-image {
     transform: scale(1.03);
   }
-  
-  .wishlist-btn {
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-  }
-  
-  .wishlist-btn:hover, .wishlist-btn.active {
-    background-color: #ffc107 !important;
-    color: white !important;
-  }
-  
-  .wishlist-btn.active i {
-    font-weight: 900;
-  }
-  
   .pet-meta span {
     font-size: 0.85rem;
   }
+  
   
   /* Responsive adjustments */
   @media (max-width: 768px) {

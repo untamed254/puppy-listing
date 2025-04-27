@@ -264,7 +264,7 @@ if (!is_logged_in()) {
                 <li><a href="vets.html"><i class="fas fa-stethoscope me-2"></i> Veterinarians</a></li>
                 <li><a href="transactions.html"><i class="fas fa-money-bill-wave me-2"></i> Transactions</a></li>
                 <li><a href="reports.html"><i class="fas fa-chart-bar me-2"></i> Reports</a></li>
-                <li><a href="settings.html"><i class="fas fa-cog me-2"></i> Settings</a></li>
+                <li><a href="settings.php"><i class="fas fa-cog me-2"></i> Settings</a></li>
             </ul>
         </aside>
 
@@ -288,7 +288,7 @@ if (!is_logged_in()) {
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li><a class="dropdown-item" href="profile.php"><i class="fas fa-user me-2"></i> Profile</a></li>
-                        <li><a class="dropdown-item" href="#settings"><i class="fas fa-cog me-2"></i> Settings</a></li>
+                        <li><a class="dropdown-item" href="settings.php"><i class="fas fa-cog me-2"></i> Settings</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
                     </ul>

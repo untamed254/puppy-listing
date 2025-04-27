@@ -198,7 +198,7 @@
                 <a href="listing.php" class="btn btn-light btn-lg px-4">
                     <i class="fas fa-search"></i> Browse Pets
                 </a>
-                <a href="#contact" class="btn btn-outline-light btn-lg px-4">
+                <a href="contactus.php" class="btn btn-outline-light btn-lg px-4">
                     <i class="fas fa-question-circle"></i> Ask Questions
                 </a>
             </div>
