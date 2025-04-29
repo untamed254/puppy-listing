@@ -233,7 +233,7 @@ function view_puppy_details() {
             // Dog Info
             echo "
             <div class='dog-info mt-4'>
-                <h1 class='display-5'>$puppy_title</h1>
+                <h1 class='display-5 text-warning'><strong>$puppy_title</strong></h1>
                 <div class='row mt-4'>
                     <div class='col-md-6'>
                         <ul class='list-group'>
@@ -243,7 +243,7 @@ function view_puppy_details() {
                             </li>
                             <li class='list-group-item d-flex justify-content-between'>
                                 <span>Age:</span>
-                                <span>$puppy_age</span>
+                                <span>$puppy_age month(s)</span>
                             </li>
                             
                         </ul>
@@ -320,8 +320,51 @@ function view_puppy_details() {
         }
     }
 }
+// search function
+function searchPets($search_query = null, $age = null, $location = null) {
+    global $con;
+    
+    $query = "
+        SELECT p.*, b.breed_name, 
+               GROUP_CONCAT(i.image_url) AS images 
+        FROM puppy_listing p
+        LEFT JOIN puppy_breed b ON p.breed_id = b.breed_id
+        LEFT JOIN pet_images i ON p.puppy_id = i.puppy_id
+        WHERE 1=1";
+    
+    $params = [];
+    $types = '';
 
+    if (!empty($search_query)) {
+        $query .= " AND (p.puppy_name LIKE ? OR b.breed_name LIKE ? OR p.puppy_desc LIKE ?)";
+        $search_term = "%$search_query%";
+        $params = array_merge($params, [$search_term, $search_term, $search_term]);
+        $types .= 'sss';
+    }
 
+    if (!empty($age)) {
+        $query .= " AND p.puppy_age = ?";
+        $params[] = $age;
+        $types .= 'i';
+    }
+
+    if (!empty($location)) {
+        $query .= " AND p.puppy_location LIKE ?";
+        $params[] = "%$location%";
+        $types .= 's';
+    }
+
+    $query .= " GROUP BY p.puppy_id ORDER BY p.puppy_id DESC";
+
+    $stmt = $con->prepare($query);
+    
+    if (!empty($params)) {
+        $stmt->bind_param($types, ...$params);
+    }
+    
+    $stmt->execute();
+    return $stmt->get_result();
+}
 
 ?>
 <!--  -->

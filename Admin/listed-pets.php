@@ -142,16 +142,13 @@ if(isset($_POST['delete'])) {
     exit;
 }
 
-// Get all pets with breed and image data
-$pets = $con->query("
-    SELECT p.*, b.breed_name, 
-           GROUP_CONCAT(i.image_url) AS images 
-    FROM puppy_listing p
-    LEFT JOIN puppy_breed b ON p.breed_id = b.breed_id
-    LEFT JOIN pet_images i ON p.puppy_id = i.puppy_id
-    GROUP BY p.puppy_id
-    ORDER BY p.puppy_id DESC
-");
+// Get search parameters
+$search = $_GET['search'] ?? null;
+$location = $_GET['location'] ?? null;
+$age = $_GET['age'] ?? null; // You can add age filter if needed
+
+// Get filtered pets
+$pets = searchPets($search, $age, $location);
 
 // Get breeds for dropdown
 $breeds = $con->query("SELECT * FROM puppy_breed ORDER BY breed_name ASC");
@@ -443,12 +440,20 @@ $breeds = $con->query("SELECT * FROM puppy_breed ORDER BY breed_name ASC");
                 <i class="fas fa-bars"></i>
             </button>
             <div class="admin-search">
-                <div class="input-group">
-                    <input type="text" class="form-control form-control-sm" placeholder="Search...">
-                    <button class="btn btn-sm btn-outline-secondary" type="button">
+                <form method="GET" class="input-group">
+                    <input type="text" class="form-control form-control-sm" 
+                        name="search" placeholder="Search pets..."
+                        value="<?= $_GET['search'] ?? '' ?>">
+                    <select class="form-select form-select-sm" name="location">
+                        <option value="">All Locations</option>
+                        <option value="Nairobi" <?= ($_GET['location'] ?? '') === 'Nairobi' ? 'selected' : '' ?>>Nairobi</option>
+                        <option value="Mombasa" <?= ($_GET['location'] ?? '') === 'Mombasa' ? 'selected' : '' ?>>Mombasa</option>
+                        <option value="Kisumu" <?= ($_GET['location'] ?? '') === 'Kisumu' ? 'selected' : '' ?>>Kisumu</option>
+                    </select>
+                    <button type="submit" class="btn btn-sm btn-outline-secondary">
                         <i class="fas fa-search"></i>
                     </button>
-                </div>
+                </form>
             </div>
             <div class="admin-actions">
                 <div class="dropdown">
@@ -500,6 +505,7 @@ $breeds = $con->query("SELECT * FROM puppy_breed ORDER BY breed_name ASC");
                             </tr>
                         </thead>
                         <tbody>
+                            
                             <?php while($pet = $pets->fetch_assoc()): 
                                 $images = explode(',', $pet['images']);
                             ?>

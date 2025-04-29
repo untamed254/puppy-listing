@@ -55,6 +55,27 @@ try {
     exit;
 }
 
+// Get search parameters
+$search = $_GET['search'] ?? null;
+$location = $_GET['location'] ?? null;
+
+// Get filtered pets
+$searchTerm = $_GET['search'] ?? '';
+// Handle dynamic search from URL like breeds.php?search=dog
+
+$breedQuery = "SELECT * FROM puppy_breed";
+
+if (!empty($searchTerm)) {
+    $breedQuery .= " WHERE breed_name LIKE ?";
+    $stmt = $con->prepare($breedQuery);
+    $searchParam = "%$searchTerm%";
+    $stmt->bind_param("s", $searchParam);
+    $stmt->execute();
+    $breeds = $stmt->get_result();
+} else {
+    $breeds = $con->query($breedQuery . " ORDER BY breed_name ASC");
+}
+
 // Get all breeds
 $breeds = $con->query("SELECT * FROM puppy_breed ORDER BY breed_name ASC");
 ?>
@@ -333,12 +354,14 @@ $breeds = $con->query("SELECT * FROM puppy_breed ORDER BY breed_name ASC");
                 <i class="fas fa-bars"></i>
             </button>
             <div class="admin-search">
-                <div class="input-group">
-                    <input type="text" class="form-control form-control-sm" placeholder="Search...">
-                    <button class="btn btn-sm btn-outline-secondary" type="button">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
+                <form method="GET" action="breeds.php" class="d-flex">
+                    <input type="text" name="search" class="form-control form-control-sm" 
+                        placeholder="Search breeds..." value="<?php echo htmlspecialchars($searchTerm); ?>">
+                    <button type="submit" class="btn btn-primary btn-sm ms-2">Search</button>
+                    <?php if(!empty($searchTerm)): ?>
+                        <a href="breeds.php" class="btn btn-danger btn-sm ms-2">Clear</a>
+                    <?php endif; ?>
+                </form>
             </div>
             <div class="admin-actions">
                 <div class="dropdown">
@@ -368,14 +391,18 @@ $breeds = $con->query("SELECT * FROM puppy_breed ORDER BY breed_name ASC");
             <?php endif; ?>
 
             <div class="admin-card">
-                <div class="card-header">
-                    <h5 class="mb-0"><i class="fas fa-dna me-2"></i> Breeds Catalog</h5>
-                    <div>
-                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addBreedModal">
-                            <i class="fas fa-plus me-1"></i> Add Breed
-                        </button>
-                    </div>
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-dna me-2"></i> Breeds Catalog 
+                    <?php if(!empty($searchTerm)): ?>
+                        <span class="text-muted fs-6">(<?= $breeds->num_rows ?> results found)</span>
+                    <?php endif; ?>
+                </h5>
+                <div>
+                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addBreedModal">
+                        <i class="fas fa-plus me-1"></i> Add Breed
+                    </button>
                 </div>
+            </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="admin-table">
@@ -468,7 +495,7 @@ $breeds = $con->query("SELECT * FROM puppy_breed ORDER BY breed_name ASC");
             </div>
         </div>
     </div>
-
+           
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Edit Breed Handler

@@ -18,7 +18,7 @@
 <div class="dog-main">
     <div class="container mt-4">
         <!-- Back Button -->
-        <a href="listing.php" class="btn btn-outline-secondary mb-4">
+        <a href="listing.php" class="btn btn-outline-primary mb-4">
             ← Back to Listings
         </a>
 

@@ -8,6 +8,31 @@ if (!is_logged_in()) {
   // The user is not logged in, so redirect them to the login page.
   header('Location: index.php');
   exit;
+  $totalPets = 0;
+  $activeUsers = 0;
+  
+  // Get Dashboard Statistics
+$totalPets = $con->query("SELECT COUNT(*) FROM puppy_listing")->fetch_row()[0];
+$activeUsers = $con->query("SELECT COUNT(*) FROM admin_table")->fetch_row()[0];
+
+// Get Recent Pets
+$recentPets = $con->query("
+    SELECT p.*, b.breed_name 
+    FROM pets p
+    LEFT JOIN puppy_breed b ON p.breed_id = b.breed_id
+    ORDER BY p.date_listed DESC 
+    LIMIT 5
+");
+
+// Get Breeds with Listings Count
+$breeds = $con->query("
+    SELECT b.*, COUNT(p.pet_id) AS listings 
+    FROM puppy_breed b
+    LEFT JOIN pets p ON b.breed_id = p.breed_id
+    GROUP BY b.breed_id
+    ORDER BY listings DESC
+    LIMIT 5
+");
 }
 
 ?>
@@ -300,12 +325,16 @@ if (!is_logged_in()) {
         <main class="admin-main">
             <!-- Dashboard Overview -->
             <div class="row mb-4">
+                <?php 
+                $totalPets = $con->query("SELECT COUNT(*) FROM puppy_listing")->fetch_row()[0];
+                $activeUsers = $con->query("SELECT COUNT(*) FROM admin_table")->fetch_row()[0];
+                ?>
                 <div class="col-md-3">
                     <div class="admin-card h-100">
                         <div class="card-body">
                             <h6 class="text-muted">Total Pets</h6>
-                            <h3>1,248</h3>
-                            <small class="text-success"><i class="fas fa-arrow-up me-1"></i> 12% from last month</small>
+                            <h3><?php echo number_format($totalPets) ?></h3>
+                            <!-- Consider adding dynamic growth calculation -->
                         </div>
                     </div>
                 </div>
@@ -313,26 +342,7 @@ if (!is_logged_in()) {
                     <div class="admin-card h-100">
                         <div class="card-body">
                             <h6 class="text-muted">Active Users</h6>
-                            <h3>3,542</h3>
-                            <small class="text-success"><i class="fas fa-arrow-up me-1"></i> 8% from last month</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="admin-card h-100">
-                        <div class="card-body">
-                            <h6 class="text-muted">Veterinarians</h6>
-                            <h3>187</h3>
-                            <small class="text-success"><i class="fas fa-arrow-up me-1"></i> 5 new this week</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="admin-card h-100">
-                        <div class="card-body">
-                            <h6 class="text-muted">Revenue</h6>
-                            <h3>KES 1.2M</h3>
-                            <small class="text-danger"><i class="fas fa-arrow-down me-1"></i> 3% from last month</small>
+                            <h3><?= number_format($activeUsers) ?></h3>
                         </div>
                     </div>
                 </div>
@@ -355,34 +365,50 @@ if (!is_logged_in()) {
                                 <th>Breed</th>
                                 <th>Price</th>
                                 <th>Location</th>
-                                <th>Actions</th>
+                               
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>#PET-1001</td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <img src="Images/stock1.jpg" width="40" height="40" class="rounded-circle me-2">
-                                        Max
-                                    </div>
-                                </td>
-                                <td>German Shepherd</td>
-                                <td>KES 25,000</td>
-                                <td>Nairobi</td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-secondary me-1"><i class="fas fa-eye"></i></button>
-                                    <button class="btn btn-sm btn-outline-warning me-1"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
-                                </td>
-                            </tr>
-                            <!-- More pet rows would go here -->
+                            <?php 
+                                // Get Recent Pets
+                                $recentPets = $con->query("
+                                SELECT p.*, b.breed_name 
+                                FROM puppy_listing p
+                                LEFT JOIN puppy_breed b ON p.breed_id = b.breed_id
+                                ORDER BY p.created_at DESC 
+                                LIMIT 5
+                                ");
+                            ?>
+                            <?php if($recentPets->num_rows > 0): ?>
+                                <?php while($pet = $recentPets->fetch_assoc()): ?>
+                                    <tr>
+                                        <td>#PET-<?= str_pad($pet['puppy_name'], 4, '0', STR_PAD_LEFT) ?></td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <?php if(!empty($pet['image'])): ?>
+                                                <img src="../uploads/<?= htmlspecialchars($pet['image']) ?>" 
+                                                    width="40" height="40" class="rounded-circle me-2">
+                                                <?php endif; ?>
+                                                <?= htmlspecialchars($pet['puppy_name']) ?>
+                                            </div>
+                                        </td>
+                                        <td><?= htmlspecialchars($pet['breed_name']) ?? 'N/A' ?></td>
+                                        <td>KES <?= number_format($pet['price']) ?></td>
+                                        <td><?= htmlspecialchars($pet['puppy_location']) ?></td>
+                                        
+                                    </tr>
+                                <?php endwhile; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="6" class="text-center py-4">No recent listings</td>
+                                </tr>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
                 <div class="card-footer">
                     <nav aria-label="Page navigation">
-                        <ul class="pagination pagination-sm mb-0">
+                        <ul class="pagination pagination-sm mb-0 mb-2">
                             <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
                             <li class="page-item active"><a class="page-link" href="#">1</a></li>
                             <li class="page-item"><a class="page-link" href="#">2</a></li>
@@ -407,23 +433,35 @@ if (!is_logged_in()) {
                             <tr>
                                 <th>ID</th>
                                 <th>Breed Name</th>
-                                <th>Category</th>
                                 <th>Listings</th>
-                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>#BR-001</td>
-                                <td>German Shepherd</td>
-                                <td>Dog</td>
-                                <td>142</td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-warning me-1"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
-                                </td>
-                            </tr>
-                            <!-- More breed rows would go here -->
+                            <?php 
+                            // Get Breeds with Listings Count
+                                $breeds = $con->query("
+                                SELECT b.*, COUNT(p.puppy_id) AS listings 
+                                FROM puppy_breed b
+                                LEFT JOIN puppy_listing p ON b.breed_id = p.breed_id
+                                GROUP BY b.breed_id
+                                ORDER BY listings DESC
+                                LIMIT 5
+                                ");
+                            ?>
+                            <?php if($breeds->num_rows > 0): ?>
+                                <?php while($breed = $breeds->fetch_assoc()): ?>
+                                    <tr>
+                                        <td>BR-<?= str_pad($breed['breed_id'], 3, '0', STR_PAD_LEFT) ?></td>
+                                        <td><?= htmlspecialchars($breed['breed_name']) ?></td>
+                                        <td><?= number_format($breed['listings']) ?></td>
+                                       
+                                    </tr>
+                                <?php endwhile; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="4" class="text-center py-4">No breeds found</td>
+                                </tr>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
