@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 22, 2025 at 05:15 PM
+-- Generation Time: Apr 29, 2025 at 11:42 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -41,7 +41,8 @@ CREATE TABLE `admin_table` (
 
 INSERT INTO `admin_table` (`admin_id`, `admin_name`, `admin_email`, `admin_image`, `admin_password`) VALUES
 (1, 'Duncan', ' duncan@petpawa.info', 'img1.jpg', '$2y$10$9jvYQ97O0V5JajkbtYMLSeWTcP65Gku0OEheu.g/p8gIfdaoDAsqm'),
-(2, 'Mwas', 'duncan@petpawa.info', '', '$2y$10$nGlBzElIxROX5KfjsEkMHeOtO/w8sR09UfEw.w8Vfz1GUB84duuw2');
+(2, 'Mwas', 'duncan@petpawa.info', '', '$2y$10$nGlBzElIxROX5KfjsEkMHeOtO/w8sR09UfEw.w8Vfz1GUB84duuw2'),
+(3, 'admin', 'admin@petpawa.info', 'ChatGPT Image Apr 11, 2025, 05_37_43 PM.png', '$2y$10$687BsTKaf/Yhoxld8gt6pOsO4x98dPgpbScUrNG0t7Lde5I.Ea.ga');
 
 -- --------------------------------------------------------
 
@@ -87,7 +88,9 @@ INSERT INTO `pet_images` (`image_id`, `puppy_id`, `image_url`) VALUES
 (7, 11, '../uploads/pets/6807a0e5f0cb2_IMG_2317.jpg'),
 (8, 12, '../uploads/pets/6807b1149dec9_istockphoto-1077470274-612x612.jpg'),
 (9, 12, '../uploads/pets/6807b114a2229_istockphoto-1133304849-612x612.jpg'),
-(10, 12, '../uploads/pets/6807b114a81e4_istockphoto-1446418006-612x612.jpg');
+(10, 12, '../uploads/pets/6807b114a81e4_istockphoto-1446418006-612x612.jpg'),
+(11, 13, '../uploads/pets/6807b41a33745_IMG_2332.jpg'),
+(12, 13, '../uploads/pets/6807b41a43bee_IMG_2333.jpg');
 
 -- --------------------------------------------------------
 
@@ -108,10 +111,11 @@ INSERT INTO `puppy_breed` (`breed_id`, `breed_name`) VALUES
 (1, 'German Shepherd'),
 (2, 'Bulldog'),
 (3, 'Poodle'),
-(4, 'Beagle'),
+(4, 'bee'),
 (5, 'Siamese'),
 (6, 'Persian'),
-(7, 'Maine Coon');
+(7, 'Maine Coon'),
+(9, 'Malnoise');
 
 -- --------------------------------------------------------
 
@@ -139,7 +143,8 @@ INSERT INTO `puppy_listing` (`puppy_id`, `category_id`, `breed_id`, `puppy_name`
 (7, 1, 1, 'Pendo', 8, 'Nairobi', '30000.00', 'Purebred German Shepherd puppy with vaccinations', '2025-04-22 12:17:20'),
 (10, 1, 1, 'Bruno', 11, 'Nairobi', '38000.00', 'Purebred German Shepherd puppy with vaccinations', '2025-04-22 13:58:45'),
 (11, 1, 3, ' Bosco', 8, 'Nairobi', '22000.00', 'Purebred Poodle puppy with vaccinations', '2025-04-22 14:00:05'),
-(12, 1, 4, 'Mutina', 3, 'Mombasa', '12000.00', 'Bailey loves snuggles, enjoys playtime with kids, and is already getting the hang of potty training. With those big floppy ears and curious eyes, he&rsquo;s impossible not to fall in love with!', '2025-04-22 15:09:08');
+(12, 1, 4, 'Mutina', 3, 'Mombasa', '12000.00', 'Bailey loves snuggles, enjoys playtime with kids, and is already getting the hang of potty training. With those big floppy ears and curious eyes, he&rsquo;s impossible not to fall in love with!', '2025-04-22 15:09:08'),
+(13, 1, 9, 'Shadow ', 10, 'Nairobi', '33000.00', 'Shadow is alert, loyal, and full of energy. Whether you&#039;re looking for a loyal family protector or a future working dog, he has the right drive and temperament.\r\n🏡 Raised in a healthy, social environment. Ready to adapt, train, and thrive.', '2025-04-22 15:22:02');
 
 --
 -- Indexes for dumped tables
@@ -187,7 +192,7 @@ ALTER TABLE `puppy_listing`
 -- AUTO_INCREMENT for table `admin_table`
 --
 ALTER TABLE `admin_table`
-  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `pet_category`
@@ -199,19 +204,19 @@ ALTER TABLE `pet_category`
 -- AUTO_INCREMENT for table `pet_images`
 --
 ALTER TABLE `pet_images`
-  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `puppy_breed`
 --
 ALTER TABLE `puppy_breed`
-  MODIFY `breed_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `breed_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `puppy_listing`
 --
 ALTER TABLE `puppy_listing`
-  MODIFY `puppy_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `puppy_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Constraints for dumped tables
