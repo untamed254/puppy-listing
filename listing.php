@@ -12,6 +12,83 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* Pet Modal Styles */
+        .pet-image {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        .modal-content {
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid #0d6efd;
+        }
+
+        .carousel-control-prev, 
+        .carousel-control-next {
+            background-color: rgba(13, 110, 253, 0.2);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .carousel-indicators button {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin: 0 5px;
+            background-color: rgba(13, 110, 253, 0.5);
+        }
+
+        .carousel-indicators button.active {
+            background-color: #0d6efd;
+        }
+
+        .btn-outline-primary {
+            border-color: #0d6efd;
+            color: #0d6efd;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #0d6efd;
+            color: white;
+        }
+
+        .text-primary {
+            color: #0d6efd !important;
+        }
+
+        .text-warning {
+            color: #ffc107 !important;
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+            border-color: #ffc107;
+            color: #212529;
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+            border-color: #d39e00;
+        }
+
+        .similar-pet-card .card {
+            transition: transform 0.2s;
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .similar-pet-card .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-color: #ffc107;
+        }
+    </style>
 </head>
 <body>
 
@@ -46,11 +123,6 @@
 <!-- Sticky Search & Filters -->
 <div class="sticky-header">
     <div class="container">
-        <div class="text-center">
-            <div class="brand-title">
-                <h1 class="text-warning">PawaPets Kenya</h1>
-            </div>
-        </div>
         <div class="row g-3">
             <div class="col-md-4">
                 <input type="text" class="form-control" placeholder="Search breeds..." id="searchInput">
@@ -115,11 +187,11 @@
             <div class="col-md-4 col-lg-2 mb-4">
                 <h5 class="text-warning mb-3">Quick Links</h5>
                 <ul class="list-unstyled">
-                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Home</a></li>
+                    <li class="mb-2"><a href="index.php" class="text-white text-decoration-none">Home</a></li>
                     <li class="mb-2"><a href="listing.php" class="text-white text-decoration-none">Listed Pets</a></li>
-                    <li class="mb-2"><a href="#about" class="text-white text-decoration-none">About Us</a></li>
+                    <li class="mb-2"><a href="aboutus.php" class="text-white text-decoration-none">About Us</a></li>
                     <li class="mb-2"><a href="#vets" class="text-white text-decoration-none">Veterinary Services</a></li>
-                    <li class="mb-2"><a href="#contact" class="text-white text-decoration-none">Contact Us</a></li>
+                    <li class="mb-2"><a href="contactus.php" class="text-white text-decoration-none">Contact Us</a></li>
                     <li class="mb-2"><a href="#" class="text-white text-decoration-none">FAQ</a></li>
                 </ul>
             </div>
@@ -177,6 +249,102 @@
     </div>
 </footer>
 
+<!-- Pet Profile Modal -->
+<div class="modal fade" id="petProfileModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #0d6efd; color: white;">
+                <h5 class="modal-title" id="petProfileModalLabel">Pet Profile</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <!-- Main Pet Info Column -->
+                        <div class="col-md-7">
+                            <!-- Pet Image Carousel -->
+                            <div id="petImagesCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+                                <div class="carousel-indicators" id="carouselIndicators"></div>
+                                <div class="carousel-inner rounded-3" id="carouselInner"></div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#petImagesCarousel" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#petImagesCarousel" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                            
+                            <!-- Pet Details -->
+                            <div class="pet-details">
+                                <h3 id="petName" class="mb-3 text-primary"></h3>
+                                <div class="row mb-3">
+                                    <div class="col-6">
+                                        <p><i class="fas fa-dog me-2 text-warning"></i> <strong>Breed:</strong> <span id="petBreed"></span></p>
+                                        <p><i class="fas fa-birthday-cake me-2 text-warning"></i> <strong>Age:</strong> <span id="petAge"></span></p>
+                                    </div>
+                                    <div class="col-6">
+                                        <p><i class="fas fa-map-marker-alt me-2 text-warning"></i> <strong>Location:</strong> <span id="petLocation"></span></p>
+                                        <p><i class="fas fa-venus-mars me-2 text-warning"></i> <strong>Gender:</strong> <span id="petGender"></span></p>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <h5 class="text-primary">Description</h5>
+                                    <p id="petDescription" class="text-muted"></p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right Side Column -->
+                        <div class="col-md-5">
+                            <!-- Seller Info -->
+                            <div class="card mb-4 border-primary">
+                                <div class="card-header text-white" style="background-color: #ffc107;">
+                                    <h5 class="mb-0">Contact Seller</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="seller-info mb-3">
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="seller-avatar me-3">
+                                                <i class="fas fa-user-circle fa-3x text-warning"></i>
+                                            </div>
+                                            <div>
+                                                <h6 id="sellerName" class="mb-0">Unknown Seller</h6>
+                                            </div>
+                                        </div>
+                                        <a href="#" class="btn btn-warning w-100 mb-2 text-white" id="contactSellerBtn">
+                                            <i class="fas fa-envelope me-2"></i> Send Message
+                                        </a>
+                                        <a href="#" class="btn btn-outline-primary w-100">
+                                            <i class="fas fa-phone-alt me-2"></i> Call Seller
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Similar Pets Section -->
+                            <div class="card border-warning">
+                                <div class="card-header text-white" style="background-color: #ffc107;">
+                                    <h5 class="mb-0">Similar Pets</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row g-2" id="similarPetsContainer">
+                                        <!-- Similar pets will be loaded here -->
+                                        <div class="col-12 text-center">
+                                            <p class="text-muted">Loading similar pets...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // Filter and Sort Functionality
@@ -224,6 +392,125 @@
             element.addEventListener('input', filterAndSort);
             element.addEventListener('change', filterAndSort);
         });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const petProfileModal = new bootstrap.Modal(document.getElementById('petProfileModal'));
+        
+        // Add click event to all Quick View buttons
+        document.querySelectorAll('.quick-view-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const petCard = this.closest('.pet-card');
+                loadPetProfile(petCard);
+            });
+        });
+        
+        // Function to load pet data into modal
+        function loadPetProfile(petCard) {
+            // Extract data from the pet card
+            const petData = {
+                id: petCard.dataset.puppyId,
+                name: petCard.dataset.puppyName,
+                breed: petCard.dataset.breedName,
+                age: petCard.dataset.puppyAge + ' month(s)',
+                location: petCard.dataset.puppyLocation,
+                gender: 'Unknown',
+                price: petCard.dataset.price,
+                description: petCard.dataset.puppyDesc || 'No description available for this pet.',
+                sellerName: petCard.dataset.sellerName || 'Unknown Seller',
+                images: [
+                    petCard.querySelector('img').src,
+                    'https://via.placeholder.com/800x600/0d6efd/FFFFFF?text=Pet+Image+2',
+                    'https://via.placeholder.com/800x600/ffc107/FFFFFF?text=Pet+Image+3'
+                ]
+            };
+            
+            // Populate the modal with pet data
+            document.getElementById('petProfileModalLabel').textContent = petData.name;
+            document.getElementById('petName').textContent = petData.name;
+            document.getElementById('petBreed').textContent = petData.breed;
+            document.getElementById('petAge').textContent = petData.age;
+            document.getElementById('petLocation').textContent = petData.location;
+            document.getElementById('petGender').textContent = petData.gender;
+            document.getElementById('petDescription').textContent = petData.description;
+            document.getElementById('sellerName').textContent = petData.sellerName;
+            
+            // Update contact links
+            document.getElementById('contactSellerBtn').href = `contact_seller.php?puppy_id=${petData.id}`;
+            document.querySelector('.btn-outline-primary').href = `contact_seller.php?puppy_id=${petData.id}`;
+            
+            // Set up carousel
+            const carouselInner = document.getElementById('carouselInner');
+            const carouselIndicators = document.getElementById('carouselIndicators');
+            
+            carouselInner.innerHTML = '';
+            carouselIndicators.innerHTML = '';
+            
+            petData.images.forEach((img, index) => {
+                // Add carousel item
+                const item = document.createElement('div');
+                item.className = `carousel-item ${index === 0 ? 'active' : ''}`;
+                item.innerHTML = `<img src="${img}" class="d-block w-100" alt="${petData.name}">`;
+                carouselInner.appendChild(item);
+                
+                // Add indicator
+                const indicator = document.createElement('button');
+                indicator.type = 'button';
+                indicator.setAttribute('data-bs-target', '#petImagesCarousel');
+                indicator.setAttribute('data-bs-slide-to', index);
+                indicator.className = index === 0 ? 'active' : '';
+                indicator.setAttribute('aria-current', index === 0 ? 'true' : 'false');
+                indicator.setAttribute('aria-label', `Slide ${index + 1}`);
+                carouselIndicators.appendChild(indicator);
+            });
+            
+            // Load similar pets
+            loadSimilarPets(petData.breed, petData.id);
+            
+            // Show the modal
+            petProfileModal.show();
+        }
+        
+        // Function to load similar pets
+        function loadSimilarPets(breed, currentPetId) {
+            const similarPetsContainer = document.getElementById('similarPetsContainer');
+            similarPetsContainer.innerHTML = '';
+            
+            // Find similar pets from the page (same breed, different pet)
+            const allPets = Array.from(document.querySelectorAll('.pet-card'));
+            const similarPets = allPets.filter(pet => 
+                pet.dataset.breedName === breed && pet.dataset.puppyId !== currentPetId
+            ).slice(0, 3); // Get max 3 similar pets
+            
+            if (similarPets.length === 0) {
+                similarPetsContainer.innerHTML = '<div class="col-12 text-center"><p class="text-muted">No similar pets found.</p></div>';
+                return;
+            }
+            
+            similarPets.forEach(pet => {
+                const petCard = document.createElement('div');
+                petCard.className = 'col-12 similar-pet-card';
+                petCard.innerHTML = `
+                    <div class="card mb-2">
+                        <img src="${pet.querySelector('img').src}" class="card-img-top" alt="${pet.dataset.puppyName}">
+                        <div class="card-body p-2">
+                            <h6 class="card-title mb-1">${pet.dataset.puppyName}</h6>
+                            <p class="card-text text-muted small mb-1">${pet.dataset.breedName}</p>
+                            <p class="card-text text-warning fw-bold">KES ${pet.dataset.price}</p>
+                        </div>
+                    </div>
+                `;
+                
+                // Add click event to similar pet cards
+                petCard.querySelector('.card').addEventListener('click', () => {
+                    loadPetProfile(pet);
+                });
+                
+                similarPetsContainer.appendChild(petCard);
+            });
+        }
     });
 </script>
 

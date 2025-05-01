@@ -317,11 +317,11 @@
             <div class="col-md-4 col-lg-2 mb-4">
                 <h5 class="text-warning mb-3">Quick Links</h5>
                 <ul class="list-unstyled">
-                    <li class="mb-2"><a href="#" class="text-white text-decoration-none">Home</a></li>
+                    <li class="mb-2"><a href="index.php" class="text-white text-decoration-none">Home</a></li>
                     <li class="mb-2"><a href="listing.php" class="text-white text-decoration-none">Listed Pets</a></li>
-                    <li class="mb-2"><a href="#about" class="text-white text-decoration-none">About Us</a></li>
+                    <li class="mb-2"><a href="aboutus.php" class="text-white text-decoration-none">About Us</a></li>
                     <li class="mb-2"><a href="#vets" class="text-white text-decoration-none">Veterinary Services</a></li>
-                    <li class="mb-2"><a href="#contact" class="text-white text-decoration-none">Contact Us</a></li>
+                    <li class="mb-2"><a href="contactus.php" class="text-white text-decoration-none">Contact Us</a></li>
                     <li class="mb-2"><a href="#" class="text-white text-decoration-none">FAQ</a></li>
                 </ul>
             </div>

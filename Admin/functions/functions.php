@@ -36,6 +36,7 @@ function getHomePagePets() {
             pl.puppy_age,
             pl.puppy_location,
             pl.price,
+            pl.puppy_desc,
             b.breed_name,
             MIN(pi.image_url) AS image_url
         FROM 
@@ -53,7 +54,7 @@ function getHomePagePets() {
         $result_query = mysqli_query($con, $select_query);
 
         if (!$result_query) {
-            die("Query Failed: " . mysqli_error($con)); // Add this line
+            die("Query Failed: " . mysqli_error($con));
         }
 
         while ($row = mysqli_fetch_assoc($result_query)) {
@@ -62,6 +63,7 @@ function getHomePagePets() {
             $puppy_age = $row['puppy_age'];
             $puppy_location = $row['puppy_location'];
             $puppy_price = $row['price'];
+            $puppy_desc = $row['puppy_desc'];
             $breed_title = $row['breed_name'] ?? 'Unknown';
 
             // Fetch the first image
@@ -71,7 +73,16 @@ function getHomePagePets() {
 
             echo "
             <div class='col-md-6 col-lg-4 col-xl-3'>
-              <div class='card pet-card h-100 border-0 shadow-sm'>
+              <div class='card pet-card h-100 border-0 shadow-sm'
+                   data-puppy-id='$puppy_id'
+                   data-puppy-name='$puppy_title'
+                   data-breed-name='$breed_title'
+                   data-puppy-age='$puppy_age'
+                   data-puppy-location='$puppy_location'
+                   data-puppy-desc='$puppy_desc'
+                   data-price='$puppy_price'
+                   data-seller-name='Unknown Seller'
+                   data-seller-rating='★★★★☆'>
                 <div class='position-relative'>
                   <img src='$P_image_one' class='card-img-top pet-image' alt='$puppy_title'>
                 </div>
@@ -82,11 +93,13 @@ function getHomePagePets() {
                   </div>
                   <div class='pet-meta d-flex flex-wrap gap-2 mb-3'>
                    <span class='text-muted'><i class='fas fa-paw me-1'></i> $breed_title</span>
-                    <span class='text-muted'><i class='fas fa-birthday-cake me-1'></i> $puppy_age  Month(s)</span>
+                    <span class='text-muted'><i class='fas fa-birthday-cake me-1'></i> $puppy_age Month(s)</span>
                     <span class='text-muted'><i class='fas fa-map-marker-alt me-1'></i> $puppy_location</span>
                   </div>
                   <div class='d-grid gap-2'>
-                    <a href='pet_profile.php?puppy_id=$puppy_id' class='btn btn-outline-primary btn-sm quick-view-btn'>Quick View</a>
+                    <a href='#' class='btn btn-outline-primary btn-sm quick-view-btn'>
+                        <i class='fas fa-eye me-2'></i> Quick View
+                    </a>
                     <a href='contact_seller.php?puppy_id=$puppy_id' class='btn btn-warning btn-sm'>Contact Seller</a>
                   </div>
                 </div>
@@ -101,7 +114,6 @@ function getHomePagePets() {
 function getAllPets() {
     global $con;
     
-
     if (!isset($_GET['breed'])) {
         $select_query = "
         SELECT 
@@ -110,6 +122,7 @@ function getAllPets() {
             pl.puppy_age,
             pl.puppy_location,
             pl.price,
+            pl.puppy_desc,
             b.breed_name,
             MIN(pi.image_url) AS image_url
         FROM 
@@ -122,16 +135,17 @@ function getAllPets() {
             pl.puppy_id
         ORDER BY 
             RAND()
-    ";
+        ";
+        
         $result_query = mysqli_query($con, $select_query);
 
         while ($row = mysqli_fetch_assoc($result_query)) {
             $puppy_id = $row['puppy_id'];
             $puppy_title = $row['puppy_name'];
             $puppy_age = $row['puppy_age'];
-            // $puppy_gender = $row['puppy_gender'];
             $puppy_location = $row['puppy_location'];
             $puppy_price = $row['price'];
+            $puppy_desc = $row['puppy_desc'];
             $breed_title = $row['breed_name'] ?? 'Unknown';
 
             // Fetch the first image
@@ -140,8 +154,17 @@ function getAllPets() {
             $P_image_one = str_replace('../', '', $img_row['image_url'] ?? 'Images/default.jpg');
 
             echo "
-            <div class='col-md-6 col-lg-4 col-xl-3'>
-              <div class='card pet-card h-100 border-0 shadow-sm'>
+            <div class='col pet-card' 
+                 data-puppy-id='$puppy_id'
+                 data-puppy-name='$puppy_title'
+                 data-breed-name='$breed_title'
+                 data-puppy-age='$puppy_age'
+                 data-puppy-location='$puppy_location'
+                 data-puppy-desc='$puppy_desc'
+                 data-price='$puppy_price'
+                 data-seller-name='Unknown Seller'
+                 data-seller-rating='★★★★☆'>
+              <div class='card h-100 border-0 shadow-sm'>
                 <div class='position-relative'>
                   <img src='$P_image_one' class='card-img-top pet-image' alt='$puppy_title'>
                 </div>
@@ -152,11 +175,13 @@ function getAllPets() {
                   </div>
                   <div class='pet-meta d-flex flex-wrap gap-2 mb-3'>
                    <span class='text-muted'><i class='fas fa-paw me-1'></i> $breed_title</span>
-                    <span class='text-muted'><i class='fas fa-birthday-cake me-1'></i> $puppy_age  Month(s)</span>
+                    <span class='text-muted'><i class='fas fa-birthday-cake me-1'></i> $puppy_age month(s)</span>
                     <span class='text-muted'><i class='fas fa-map-marker-alt me-1'></i> $puppy_location</span>
                   </div>
                   <div class='d-grid gap-2'>
-                    <a href='pet_profile.php?puppy_id=$puppy_id' class='btn btn-outline-primary btn-sm quick-view-btn'>Quick View</a>
+                    <a href='#' class='btn btn-outline-primary btn-sm quick-view-btn'>
+                        <i class='fas fa-eye me-2'></i> Quick View
+                    </a>
                     <a href='contact_seller.php?puppy_id=$puppy_id' class='btn btn-warning btn-sm'>Contact Seller</a>
                   </div>
                 </div>
