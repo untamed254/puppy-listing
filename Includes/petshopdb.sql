@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 29, 2025 at 11:42 AM
+-- Generation Time: May 08, 2025 at 08:06 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -32,17 +32,18 @@ CREATE TABLE `admin_table` (
   `admin_name` varchar(100) NOT NULL,
   `admin_email` varchar(100) NOT NULL,
   `admin_image` varchar(255) NOT NULL,
-  `admin_password` varchar(100) NOT NULL
+  `admin_password` varchar(100) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `admin_table`
 --
 
-INSERT INTO `admin_table` (`admin_id`, `admin_name`, `admin_email`, `admin_image`, `admin_password`) VALUES
-(1, 'Duncan', ' duncan@petpawa.info', 'img1.jpg', '$2y$10$9jvYQ97O0V5JajkbtYMLSeWTcP65Gku0OEheu.g/p8gIfdaoDAsqm'),
-(2, 'Mwas', 'duncan@petpawa.info', '', '$2y$10$nGlBzElIxROX5KfjsEkMHeOtO/w8sR09UfEw.w8Vfz1GUB84duuw2'),
-(3, 'admin', 'admin@petpawa.info', 'ChatGPT Image Apr 11, 2025, 05_37_43 PM.png', '$2y$10$687BsTKaf/Yhoxld8gt6pOsO4x98dPgpbScUrNG0t7Lde5I.Ea.ga');
+INSERT INTO `admin_table` (`admin_id`, `admin_name`, `admin_email`, `admin_image`, `admin_password`, `created_at`) VALUES
+(3, 'admin', 'admin@petpawa.info', 'ChatGPT Image Apr 11, 2025, 05_37_43 PM.png', '$2y$10$687BsTKaf/Yhoxld8gt6pOsO4x98dPgpbScUrNG0t7Lde5I.Ea.ga', '2025-05-08 16:28:26'),
+(5, 'Duncan ', 'duncan@petpawa.info', 'ChatGPT Image Apr 11, 2025, 05_37_43 PM.png', '$2y$10$U.kkvzZNBCHE7D6l1umLnuCCh49hpvbLkdMUrUYAUfmN2nFXebnmS', '2025-05-08 16:59:09'),
+(6, 'Collins ', 'collins@petpawa.info', 'ChatGPT Image Apr 11, 2025, 05_37_43 PM.png', '$2y$10$p8S2m4IHpYYqhsk/Ns4azux3G9Z/K/fe2k1x/nXVVwmlKml1/PKGq', '2025-05-08 18:04:59');
 
 -- --------------------------------------------------------
 
@@ -192,7 +193,7 @@ ALTER TABLE `puppy_listing`
 -- AUTO_INCREMENT for table `admin_table`
 --
 ALTER TABLE `admin_table`
-  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `pet_category`
