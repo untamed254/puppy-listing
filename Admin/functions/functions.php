@@ -390,6 +390,9 @@ function searchPets($search_query = null, $age = null, $location = null) {
     $stmt->execute();
     return $stmt->get_result();
 }
+//salutation function
+
+
 
 ?>
 <!--  -->
