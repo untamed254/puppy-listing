@@ -1,3 +1,25 @@
+<?php
+session_start();
+// Time-based greeting
+$hour = date('H');
+$greeting = match(true) {
+    $hour >= 5 && $hour < 12 => "Good morning",
+    $hour >= 12 && $hour < 17 => "Good afternoon",
+    $hour >= 17 && $hour < 21 => "Good evening",
+    default => "Good night"
+};
+
+// Get admin name from session (assuming you store it during login)
+$adminName = $_SESSION['admin_name'] ?? 'Admin';
+
+include("../Includes/conn.php");
+include("functions/functions.php");
+
+if (!is_logged_in()) {
+    header('Location: index.php');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -194,37 +216,8 @@
         <!-- Sidebar -->
         <?php
          include("components/sidebar.php"); 
+         include("components/adminHeader.php"); 
         ?>
-
-
-        <!-- Header -->
-        <header class="admin-header">
-            <button class="btn btn-sm btn-outline-secondary d-lg-none" id="sidebarToggle">
-                <i class="fas fa-bars"></i>
-            </button>
-            <div class="admin-search">
-                <div class="input-group">
-                    <input type="text" class="form-control form-control-sm" placeholder="Search...">
-                    <button class="btn btn-sm btn-outline-secondary" type="button">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="admin-actions">
-                <div class="dropdown">
-                    <button class="btn btn-sm btn-light dropdown-toggle" data-bs-toggle="dropdown">
-                        <i class="fas fa-user-circle me-1"></i> Admin User
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="profile.php"><i class="fas fa-user me-2"></i> Profile</a></li>
-                        <li><a class="dropdown-item" href="settings.php"><i class="fas fa-cog me-2"></i> Settings</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="logout.php"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
-                    </ul>
-                </div>
-            </div>
-        </header>
-
         <!-- Main Content -->
         <main class="admin-main">
             <div class="d-flex justify-content-between align-items-center mb-4">
