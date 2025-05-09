@@ -202,7 +202,7 @@ $breeds = $con->query("SELECT * FROM puppy_breed ORDER BY breed_name ASC");
             width: 250px;
             background: linear-gradient(180deg, var(--primary-color) 0%, #224abe 100%);
             color: white;
-            transition: all 0.3s;
+            transition: transform 0.3s ease-in-out;
             position: fixed;
             height: 100vh;
             z-index: 1000;
@@ -262,6 +262,38 @@ $breeds = $con->query("SELECT * FROM puppy_breed ORDER BY breed_name ASC");
             height: 100%;
             width: 4px;
             background-color: white;
+        }
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        @media (max-width: 992px) {
+            .admin-sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .admin-sidebar.show {
+                transform: translateX(0);
+            }
+            
+            .sidebar-overlay.show {
+                display: block;
+            }
+            
+            .admin-header {
+                left: 0 !important;
+            }
+            
+            .admin-main {
+                margin-left: 0 !important;
+            }
         }
         
         /* Header Styles */
@@ -423,9 +455,17 @@ $breeds = $con->query("SELECT * FROM puppy_breed ORDER BY breed_name ASC");
                 -webkit-overflow-scrolling: touch;
             }
         }
+        @media (max-width: 768px) {
+            #addPetModal .modal-dialog,
+            #editPetModal .modal-dialog {
+                margin: 0.5rem auto;
+                max-width: 95%;
+            }
+        }
     </style>
 </head>
 <body>
+    <div class="sidebar-overlay"></div>
     <div class="admin-container">
         <!-- Sidebar -->
         <?php
@@ -709,9 +749,19 @@ $breeds = $con->query("SELECT * FROM puppy_breed ORDER BY breed_name ASC");
     });
 </script>
     <script>
-        // Toggle sidebar
+       // Toggle sidebar with overlay
         document.getElementById('sidebarToggle').addEventListener('click', function() {
-            document.querySelector('.admin-sidebar').classList.toggle('show');
+            const sidebar = document.querySelector('.admin-sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            
+            sidebar.classList.toggle('show');
+            overlay.classList.toggle('show');
+        });
+
+        // Close sidebar when clicking overlay
+        document.querySelector('.sidebar-overlay').addEventListener('click', function() {
+            this.classList.remove('show');
+            document.querySelector('.admin-sidebar').classList.remove('show');
         });
     </script>
 </body>
