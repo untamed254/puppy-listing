@@ -400,10 +400,7 @@ $breeds = $con->query("
                                         <td>#PET-<?= str_pad($pet['puppy_name'], 4, '0', STR_PAD_LEFT) ?></td>
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <?php if(!empty($pet['image'])): ?>
-                                                <img src="../uploads/<?= htmlspecialchars($pet['image']) ?>" 
-                                                    width="40" height="40" class="rounded-circle me-2">
-                                                <?php endif; ?>
+                                               
                                                 <?= htmlspecialchars($pet['puppy_name']) ?>
                                             </div>
                                         </td>
@@ -421,17 +418,7 @@ $breeds = $con->query("
                         </tbody>
                     </table>
                 </div>
-                <div class="card-footer">
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination pagination-sm mb-0 mb-2">
-                            <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                        </ul>
-                    </nav>
-                </div>
+                
             </div>
 
             <!-- Breeds Management Section -->
