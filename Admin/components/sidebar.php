@@ -12,6 +12,6 @@
                 <li><a href="vets.html"><i class="fas fa-stethoscope me-2"></i> Veterinarians</a></li>
                 <li><a href="transactions.html"><i class="fas fa-money-bill-wave me-2"></i> Transactions</a></li>
                 <li><a href="reports.html"><i class="fas fa-chart-bar me-2"></i> Reports</a></li>
-                <li><a href="settings.html"><i class="fas fa-cog me-2"></i> Settings</a></li>
+                <li><a href="settings.php"><i class="fas fa-cog me-2"></i> Settings</a></li>
             </ul>
-        </aside>
+</aside>

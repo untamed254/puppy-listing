@@ -61,7 +61,7 @@ if (!is_logged_in()) {
             position: fixed;
             height: 100vh;
             z-index: 1000;
-            transition: all 0.3s;
+            transition: transform 0.3s ease-in-out;
             box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
         }
 
@@ -120,6 +120,38 @@ if (!is_logged_in()) {
             height: 100%;
             width: 4px;
             background-color: white;
+        }
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        @media (max-width: 992px) {
+            .admin-sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .admin-sidebar.show {
+                transform: translateX(0);
+            }
+            
+            .sidebar-overlay.show {
+                display: block;
+            }
+            
+            .admin-header {
+                left: 0 !important;
+            }
+            
+            .admin-main {
+                margin-left: 0 !important;
+            }
         }
 
         /* Header Styles */
@@ -212,6 +244,7 @@ if (!is_logged_in()) {
     </style>
 </head>
 <body>
+    <div class="sidebar-overlay"></div>
     <div class="admin-container">
         <!-- Sidebar -->
         <?php
@@ -389,9 +422,19 @@ if (!is_logged_in()) {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Toggle sidebar on mobile
+        // Toggle sidebar with overlay
         document.getElementById('sidebarToggle').addEventListener('click', function() {
-            document.querySelector('.admin-sidebar').classList.toggle('show');
+            const sidebar = document.querySelector('.admin-sidebar');
+            const overlay = document.querySelector('.sidebar-overlay');
+            
+            sidebar.classList.toggle('show');
+            overlay.classList.toggle('show');
+        });
+
+        // Close sidebar when clicking overlay
+        document.querySelector('.sidebar-overlay').addEventListener('click', function() {
+            this.classList.remove('show');
+            document.querySelector('.admin-sidebar').classList.remove('show');
         });
         
         // Initialize tooltips
