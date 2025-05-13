@@ -454,7 +454,7 @@ $breeds = $con->query("SELECT * FROM puppy_breed ORDER BY breed_name ASC");
                     </button>
                 </div>
                 <div class="table-responsive">
-                    <table class="admin-table">
+                    <table class="admin-table table table-sm">
                         <thead>
                             <tr>
                                 <th>ID</th>

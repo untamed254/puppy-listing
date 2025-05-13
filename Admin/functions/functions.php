@@ -390,7 +390,15 @@ function searchPets($search_query = null, $age = null, $location = null) {
     $stmt->execute();
     return $stmt->get_result();
 }
-//salutation function
+function getActivityBadgeColor($type) {
+    switch ($type) {
+        case 'login': return 'success';
+        case 'update': return 'info';
+        case 'create': return 'primary';
+        case 'delete': return 'danger';
+        default: return 'secondary';
+    }
+}
 
 
 

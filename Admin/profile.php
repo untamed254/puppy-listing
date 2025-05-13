@@ -1,5 +1,137 @@
 <?php
 session_start();
+include("../Includes/conn.php");
+include("functions/functions.php");
+
+if (!is_logged_in()) {
+    header('Location: index.php');
+    exit;
+}
+
+$admin_name = $_SESSION['admin_name'];  // Get admin name from session
+//$admin_id = $_SESSION['admin_id'];      // Get admin ID from session
+$adminData = [];
+$activityLog = [];
+
+// Fetch admin details
+$stmt = $con->prepare("SELECT admin_name, admin_email, admin_image, created_at FROM admin_table WHERE admin_name = ?");
+$stmt->bind_param("s", $admin_name);
+$stmt->execute();
+$result = $stmt->get_result();
+$adminData = $result->fetch_assoc();
+
+// Check if admin data exists
+if (!$adminData) {
+    $_SESSION['error'] = "Admin profile not found!";
+    header("Location: dashboard.php");
+    exit();
+}
+
+// Handle profile updates
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['update_profile'])) {
+        $name = filter_var($_POST['name'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+        $phone = filter_var($_POST['phone'], FILTER_SANITIZE_STRING);
+        
+        $stmt = $con->prepare("UPDATE admin_table SET admin_name = ?, admin_email = ?, phone = ? WHERE admin_name = ?");
+        $stmt->bind_param("ssss", $name, $email, $phone, $admin_name);
+        
+        if ($stmt->execute()) {
+            $_SESSION['success'] = "Profile updated successfully";
+            header("Refresh:0");
+            exit;
+        } else {
+            $_SESSION['error'] = "Failed to update profile";
+        }
+    }
+
+    // Handle profile picture update
+    if (isset($_POST['update_photo'])) {
+        $targetDir = "adminImages/";
+        $fileName = basename($_FILES["photo"]["name"]);
+        $targetFile = $targetDir . uniqid() . '_' . $fileName;
+        $uploadOk = 1;
+        $imageFileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+
+        // Check image validity
+        $check = getimagesize($_FILES["photo"]["tmp_name"]);
+        if ($check === false) {
+            $_SESSION['error'] = "File is not an image.";
+            $uploadOk = 0;
+        }
+
+        // Check file size
+        if ($_FILES["photo"]["size"] > 500000) {
+            $_SESSION['error'] = "Sorry, your file is too large.";
+            $uploadOk = 0;
+        }
+
+        // Allow certain file formats
+        if (!in_array($imageFileType, ["jpg", "png", "jpeg", "gif"])) {
+            $_SESSION['error'] = "Only JPG, JPEG, PNG & GIF files are allowed.";
+            $uploadOk = 0;
+        }
+
+        if ($uploadOk == 1) {
+            if (move_uploaded_file($_FILES["photo"]["tmp_name"], $targetFile)) {
+                $stmt = $con->prepare("UPDATE admin_table SET admin_image = ? WHERE admin_name = ?");
+                $stmt->bind_param("ss", $targetFile, $admin_name);
+                if ($stmt->execute()) {
+                    $_SESSION['success'] = "Profile picture updated successfully";
+                    header("Refresh:0");
+                    exit;
+                }
+            } else {
+                $_SESSION['error'] = "Sorry, there was an error uploading your file.";
+            }
+        }
+    }
+
+    // Handle password change
+    if (isset($_POST['change_password'])) {
+        $currentPass = $_POST['current_password'];
+        $newPass = $_POST['new_password'];
+        $confirmPass = $_POST['confirm_password'];
+        
+        // Verify current password
+        $stmt = $con->prepare("SELECT admin_password FROM admin_table WHERE admin_name = ?");
+        $stmt->bind_param("s", $admin_name);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $dbPassword = $result->fetch_assoc()['admin_password'];
+        
+        if (password_verify($currentPass, $dbPassword)) {
+            if ($newPass === $confirmPass) {
+                $newHash = password_hash($newPass, PASSWORD_DEFAULT);
+                $stmt = $con->prepare("UPDATE admin_table SET admin_password = ? WHERE admin_id = ?");
+                $stmt->bind_param("si", $newHash, $admin_id);
+                
+                if ($stmt->execute()) {
+                    $_SESSION['success'] = "Password updated successfully";
+                    header("Refresh:0");
+                    exit;
+                }
+            } else {
+                $_SESSION['error'] = "New passwords do not match";
+            }
+        } else {
+            $_SESSION['error'] = "Current password is incorrect";
+        }
+    }
+}
+
+// Fetch activity log
+$stmt = $con->prepare("
+    SELECT * FROM activity_log 
+    WHERE admin_name = ? 
+    ORDER BY activity_date DESC 
+    LIMIT 10
+");
+$stmt->bind_param("s", $admin_name);
+$stmt->execute();
+$activityLog = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+
 // Time-based greeting
 $hour = date('H');
 $greeting = match(true) {
@@ -9,16 +141,6 @@ $greeting = match(true) {
     default => "Good night"
 };
 
-// Get admin name from session (assuming you store it during login)
-$adminName = $_SESSION['admin_name'] ?? 'Admin';
-
-include("../Includes/conn.php");
-include("functions/functions.php");
-
-if (!is_logged_in()) {
-    header('Location: index.php');
-    exit;
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -234,6 +356,15 @@ if (!is_logged_in()) {
         ?>
         <!-- Main Content -->
         <main class="admin-main">
+             <?php if(isset($_SESSION['error'])): ?>
+                <div class="alert alert-danger"><?= $_SESSION['error'] ?></div>
+                <?php unset($_SESSION['error']); ?>
+            <?php endif; ?>
+            
+            <?php if(isset($_SESSION['success'])): ?>
+                <div class="alert alert-success"><?= $_SESSION['success'] ?></div>
+                <?php unset($_SESSION['success']); ?>
+            <?php endif; ?>
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1 class="h3 mb-0">User Profile</h1>
                 <nav aria-label="breadcrumb">
@@ -247,14 +378,13 @@ if (!is_logged_in()) {
             <!-- Profile Header -->
             <div class="profile-header d-flex align-items-center">
                 <div>
-                    <img src="#" 
-                         alt="Profile Picture" class="profile-picture">
+                    <img src="<?= htmlspecialchars($adminData['admin_image'] ?? '../Admin/Images/default.png') ?>" 
+                        alt="Profile Picture" class="profile-picture">
                 </div>
                 <div class="profile-details">
-                    <h2></h2>
-                    <p class="text-muted mb-1"><i class="fas fa-envelope me-2"></i> </p>
-                    <p class="text-muted mb-1"><i class="fas fa-user-tag me-2"></i> </p>
-                    <p class="text-muted"><i class="fas fa-calendar-alt me-2"></i> Member since</p>
+                    <h2><?= htmlspecialchars($adminData['admin_name'] ?? 'N/A') ?></h2>
+                    <p class="text-muted mb-1"><i class="fas fa-envelope me-2"></i> <?= htmlspecialchars($adminData['admin_email']) ?></p>
+                    <p class="text-muted"><i class="fas fa-calendar-alt me-2"></i> Member since <?= !empty($adminData['created_at']) ? date('M Y', strtotime($adminData['created_at'])) : 'N/A' ?></p>
                 </div>
             </div>
 
@@ -281,35 +411,35 @@ if (!is_logged_in()) {
                         <div class="col-md-6">
                             <div class="profile-card">
                                 <h4 class="mb-4">Personal Information</h4>
-                                <form>
+                                <form method="POST">
                                     <div class="mb-3">
                                         <label class="form-label">Full Name</label>
-                                        <input type="text" class="form-control" value="">
+                                        <input type="text" class="form-control" name="name" 
+                                            value="<?= htmlspecialchars($adminData['admin_name']) ?>" required>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Email</label>
-                                        <input type="email" class="form-control" value="">
+                                        <input type="email" class="form-control" name="email" 
+                                            value="<?= htmlspecialchars($adminData['admin_email']) ?>" required>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Phone Number</label>
-                                        <input type="tel" class="form-control" value="">
+                                        <input type="tel" class="form-control" name="phone" 
+                                            value="<?= htmlspecialchars($adminData['phone'] ?? '') ?>">
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                                    <button type="submit" name="update_profile" class="btn btn-primary">Save Changes</button>
                                 </form>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="profile-card">
                                 <h4 class="mb-4">Profile Picture</h4>
-                                <form enctype="multipart/form-data">
+                                <form method="POST" enctype="multipart/form-data">
                                     <div class="mb-3">
                                         <label class="form-label">Upload New Photo</label>
-                                        <input type="file" class="form-control" accept="image/*">
+                                        <input type="file" class="form-control" name="photo" accept="image/*" required>
                                     </div>
-                                    <div class="alert alert-info">
-                                        <small>For best results, use an image at least 300px by 300px in .jpg or .png format</small>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Update Photo</button>
+                                    <button type="submit" name="update_photo" class="btn btn-primary">Update Photo</button>
                                 </form>
                             </div>
                         </div>
@@ -320,20 +450,20 @@ if (!is_logged_in()) {
                 <div class="tab-pane fade" id="security">
                     <div class="profile-card">
                         <h4 class="mb-4">Change Password</h4>
-                        <form>
+                        <form method="POST">
                             <div class="mb-3">
                                 <label class="form-label">Current Password</label>
-                                <input type="password" class="form-control">
+                                <input type="password" class="form-control" name="current_password" required>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">New Password</label>
-                                <input type="password" class="form-control">
+                                <input type="password" class="form-control" name="new_password" required>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Confirm New Password</label>
-                                <input type="password" class="form-control">
+                                <input type="password" class="form-control" name="confirm_password" required>
                             </div>
-                            <button type="submit" class="btn btn-primary">Update Password</button>
+                            <button type="submit" name="change_password" class="btn btn-primary">Update Password</button>
                         </form>
                     </div>
                 </div>
@@ -343,20 +473,17 @@ if (!is_logged_in()) {
                     <div class="profile-card">
                         <h4 class="mb-4">Recent Activity</h4>
                         <div class="list-group">
+                            <?php foreach ($activityLog as $activity): ?>
                             <div class="list-group-item">
                                 <div class="d-flex justify-content-between">
-                                    <small class="text-muted">Today, 10:45 AM</small>
-                                    <span class="badge bg-success">Login</span>
+                                    <small class="text-muted"><?= date('M j, Y H:i', strtotime($activity['activity_date'])) ?></small>
+                                    <span class="badge bg-<?= getActivityBadgeColor($activity['activity_type']) ?>">
+                                        <?= ucfirst($activity['activity_type']) ?>
+                                    </span>
                                 </div>
-                                <p class="mb-0">Logged in from 192.168.1.1</p>
+                                <p class="mb-0"><?= htmlspecialchars($activity['description']) ?></p>
                             </div>
-                            <div class="list-group-item">
-                                <div class="d-flex justify-content-between">
-                                    <small class="text-muted">Yesterday, 3:20 PM</small>
-                                    <span class="badge bg-info">Update</span>
-                                </div>
-                                <p class="mb-0">Updated pet listing "Max"</p>
-                            </div>
+                            <?php endforeach; ?>
                         </div>
                     </div>
                 </div>

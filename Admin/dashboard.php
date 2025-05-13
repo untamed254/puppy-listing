@@ -294,7 +294,16 @@ $breeds = $con->query("
         ?>
         <!-- Main Content -->
         <main class="admin-main">
-            <!-- salutation -->
+            <!-- errors -->
+              <?php if(isset($_SESSION['error'])): ?>
+                <div class="alert alert-danger"><?= $_SESSION['error'] ?></div>
+                <?php unset($_SESSION['error']); ?>
+            <?php endif; ?>
+            
+            <?php if(isset($_SESSION['success'])): ?>
+                <div class="alert alert-success"><?= $_SESSION['success'] ?></div>
+                <?php unset($_SESSION['success']); ?>
+            <?php endif; ?>
 
             <!-- Dashboard Overview -->
             <div class="row mb-4">

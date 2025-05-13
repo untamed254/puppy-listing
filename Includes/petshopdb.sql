@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 08, 2025 at 08:06 PM
+-- Generation Time: May 13, 2025 at 08:25 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -24,6 +24,21 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `activity_log`
+--
+
+CREATE TABLE `activity_log` (
+  `id` int(11) NOT NULL,
+  `admin_name` varchar(255) NOT NULL,
+  `activity_type` varchar(20) NOT NULL,
+  `description` text NOT NULL,
+  `activity_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `ip_address` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `admin_table`
 --
 
@@ -33,6 +48,7 @@ CREATE TABLE `admin_table` (
   `admin_email` varchar(100) NOT NULL,
   `admin_image` varchar(255) NOT NULL,
   `admin_password` varchar(100) NOT NULL,
+  `phone` varchar(20) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -40,10 +56,9 @@ CREATE TABLE `admin_table` (
 -- Dumping data for table `admin_table`
 --
 
-INSERT INTO `admin_table` (`admin_id`, `admin_name`, `admin_email`, `admin_image`, `admin_password`, `created_at`) VALUES
-(3, 'admin', 'admin@petpawa.info', 'ChatGPT Image Apr 11, 2025, 05_37_43 PM.png', '$2y$10$687BsTKaf/Yhoxld8gt6pOsO4x98dPgpbScUrNG0t7Lde5I.Ea.ga', '2025-05-08 16:28:26'),
-(5, 'Duncan ', 'duncan@petpawa.info', 'ChatGPT Image Apr 11, 2025, 05_37_43 PM.png', '$2y$10$U.kkvzZNBCHE7D6l1umLnuCCh49hpvbLkdMUrUYAUfmN2nFXebnmS', '2025-05-08 16:59:09'),
-(6, 'Collins ', 'collins@petpawa.info', 'ChatGPT Image Apr 11, 2025, 05_37_43 PM.png', '$2y$10$p8S2m4IHpYYqhsk/Ns4azux3G9Z/K/fe2k1x/nXVVwmlKml1/PKGq', '2025-05-08 18:04:59');
+INSERT INTO `admin_table` (`admin_id`, `admin_name`, `admin_email`, `admin_image`, `admin_password`, `phone`, `created_at`) VALUES
+(3, 'Mwangi', 'mwangi@petpawa.info', 'adminImages/68238cacd8811_WhatsApp Image 2025-04-11 at 17.40.11.jpeg', '$2y$10$rmlf/DOxnIQzE2fxL8iqvOt2CnBNwdQborl3kSdaKdtzy0VFA28Xe', '', '2025-05-13 18:17:16'),
+(6, 'Collins ', 'collins@petpawa.info', 'ChatGPT Image Apr 11, 2025, 05_37_43 PM.png', '$2y$10$p8S2m4IHpYYqhsk/Ns4azux3G9Z/K/fe2k1x/nXVVwmlKml1/PKGq', '', '2025-05-08 18:04:59');
 
 -- --------------------------------------------------------
 
@@ -152,10 +167,18 @@ INSERT INTO `puppy_listing` (`puppy_id`, `category_id`, `breed_id`, `puppy_name`
 --
 
 --
+-- Indexes for table `activity_log`
+--
+ALTER TABLE `activity_log`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `admin_name` (`admin_name`);
+
+--
 -- Indexes for table `admin_table`
 --
 ALTER TABLE `admin_table`
-  ADD PRIMARY KEY (`admin_id`);
+  ADD PRIMARY KEY (`admin_id`),
+  ADD UNIQUE KEY `unique_admin_name` (`admin_name`);
 
 --
 -- Indexes for table `pet_category`
@@ -190,6 +213,12 @@ ALTER TABLE `puppy_listing`
 --
 
 --
+-- AUTO_INCREMENT for table `activity_log`
+--
+ALTER TABLE `activity_log`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `admin_table`
 --
 ALTER TABLE `admin_table`
@@ -222,6 +251,12 @@ ALTER TABLE `puppy_listing`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `activity_log`
+--
+ALTER TABLE `activity_log`
+  ADD CONSTRAINT `activity_log_ibfk_1` FOREIGN KEY (`admin_name`) REFERENCES `admin_table` (`admin_name`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `pet_images`

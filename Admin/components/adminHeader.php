@@ -1,4 +1,4 @@
-
+<?php $adminName = $_SESSION['admin_name']; ?>
 <!-- Header -->
 <header class="admin-header">
     <button class="btn btn-sm btn-outline-secondary d-lg-none" id="sidebarToggle">
