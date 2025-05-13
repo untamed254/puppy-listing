@@ -128,8 +128,13 @@ $stmt = $con->prepare("
     ORDER BY activity_date DESC 
     LIMIT 10
 ");
+if (!$stmt) {
+    die("Prepare failed: " . $con->error);
+}
 $stmt->bind_param("s", $admin_name);
-$stmt->execute();
+if (!$stmt->execute()) {
+    die("Execute failed: " . $stmt->error);
+}
 $activityLog = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
 // Time-based greeting
@@ -470,23 +475,29 @@ $greeting = match(true) {
 
                 <!-- Activity Tab -->
                 <div class="tab-pane fade" id="activity">
-                    <div class="profile-card">
-                        <h4 class="mb-4">Recent Activity</h4>
-                        <div class="list-group">
-                            <?php foreach ($activityLog as $activity): ?>
-                            <div class="list-group-item">
-                                <div class="d-flex justify-content-between">
-                                    <small class="text-muted"><?= date('M j, Y H:i', strtotime($activity['activity_date'])) ?></small>
-                                    <span class="badge bg-<?= getActivityBadgeColor($activity['activity_type']) ?>">
-                                        <?= ucfirst($activity['activity_type']) ?>
-                                    </span>
-                                </div>
-                                <p class="mb-0"><?= htmlspecialchars($activity['description']) ?></p>
-                            </div>
-                            <?php endforeach; ?>
+    <div class="profile-card">
+        <h4 class="mb-4">Recent Activity</h4>
+        <div class="list-group">
+            <?php if (!empty($activityLog)): ?>
+                <?php foreach ($activityLog as $activity): ?>
+                    <div class="list-group-item">
+                        <div class="d-flex justify-content-between">
+                            <small class="text-muted"><?= date('M j, Y H:i', strtotime($activity['activity_date'])) ?></small>
+                            <span class="badge bg-<?= getActivityBadgeColor($activity['activity_type']) ?>">
+                                <?= ucfirst($activity['activity_type']) ?>
+                            </span>
                         </div>
+                        <p class="mb-0"><?= htmlspecialchars($activity['description']) ?></p>
                     </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="list-group-item">
+                    <p class="text-muted mb-0">No recent activity found.</p>
                 </div>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
             </div>
         </main>
     </div>
